@@ -33,8 +33,8 @@ class TodoTable extends Component {
                                 <Table.HeaderCell singleLine>Title</Table.HeaderCell>
                                 <Table.HeaderCell>Created</Table.HeaderCell>
                                 <Table.HeaderCell>Deadline</Table.HeaderCell>
-                                <Table.HeaderCell>Tags</Table.HeaderCell>
                                 <Table.HeaderCell>Summary</Table.HeaderCell>
+                                <Table.HeaderCell>Tags</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
