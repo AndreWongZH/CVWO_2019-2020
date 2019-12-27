@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import {
+    UPDATE_NAV,
     LOAD_DATA_BEGIN,
     LOAD_DATA_SUCCESS,
     LOAD_DATA_FAIL,
@@ -16,11 +17,17 @@ import {
 const initialState = {
     todos: [],
     loading: true,
+    navRoute: '/'
 }
 
 function rootReducer(state = initialState, action) {
     console.log(action.type);
     switch (action.type) {
+        case UPDATE_NAV:
+            return {
+                ...state,
+                navRoute: action.payload
+            }
         case LOAD_DATA_BEGIN:
             return {
                 ...state,

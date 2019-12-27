@@ -1,30 +1,47 @@
 import React, { Component } from 'react'
 import { Menu, Input } from 'semantic-ui-react'
 
-export default class NavBar extends Component {
-  state = { activeItem: 'home' }
+import { connect } from 'react-redux'
+import { updateNav } from '../store/actions'
+import { Redirect } from 'react-router-dom'
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+class NavBar extends Component {
+  constructor() {
+    super()
+    this.state = {
+      redirect: false
+    }
+  }
+
+  handleItemClick = (e, { name }) => {
+    const { updateNav } = this.props
+    updateNav(name)
+    this.setState({ redirect: true })
+  }
 
   render() {
-    const { activeItem } = this.state
+    const { navRoute } = this.props
+    const { redirect } = this.state
 
     return (
       <div>
         <Menu pointing secondary>
           <Menu.Item
-            name='Todo Dashboard'
-            active={activeItem === 'Todo Dashboard'}
+            name="/"
+            content='Todo Dashboard'
+            active={navRoute === '/'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            name='Add new task'
-            active={activeItem === 'Add new task'}
+            name="/add"
+            content='Add new task'
+            active={navRoute === '/add'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            name='Focus on Me'
-            active={activeItem === 'Focus on Me'}
+            name="/focus"
+            content='Focus on Me'
+            active={navRoute === '/focus'}
             onClick={this.handleItemClick}
           />
           <Menu.Menu position='right'>
@@ -33,7 +50,20 @@ export default class NavBar extends Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu>
+        {redirect && <Redirect to={navRoute} />}
       </div>
     )
   }
 }
+
+const matchStateToProps = (state) => {
+  return {
+    navRoute: state.navRoute
+  }
+}
+
+const matchDispatchToProps = (dispatch) => ({
+  updateNav: (title) => dispatch(updateNav(title))
+})
+
+export default connect(matchStateToProps, matchDispatchToProps)(NavBar);

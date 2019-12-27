@@ -1,3 +1,5 @@
+export const UPDATE_NAV = 'UPDATE_NAV'
+
 export const LOAD_DATA_BEGIN = 'LOAD_DATA_BEGIN'
 
 export const LOAD_DATA_SUCCESS = 'LOAD_DATA_SUCCESS'

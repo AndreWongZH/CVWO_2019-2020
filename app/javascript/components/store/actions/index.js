@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import {
+    UPDATE_NAV,
     LOAD_DATA_BEGIN,
     LOAD_DATA_SUCCESS,
     LOAD_DATA_FAIL,
@@ -11,6 +12,10 @@ import {
     DELETE_TODO_FAIL,
     DELETE_TODO_SUCCESS
 } from '../constants'
+
+export const updateNav = (title) => {
+    return { type: UPDATE_NAV, payload: title}
+}
 
 export const loadData = (payload) => {
     return (dispatch) => {
