@@ -1,18 +1,43 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+
+import {
+    LOAD_DATA_BEGIN,
+    LOAD_DATA_SUCCESS,
+    LOAD_DATA_FAIL,
+    CREATE_TODO_FAIL,
+    CREATE_TODO_SUCCESS,
+    UPDATE_TODO_FAIL,
+    UPDATE_TODO_SUCCESS,
+    DELETE_TODO_FAIL,
+    DELETE_TODO_SUCCESS
+} from './constants'
 
 const initialState = {
-    todo: []
+    todos: [],
+    loading: true,
 }
 
-function rootReducer(state, action) {
+function rootReducer(state = initialState, action) {
     console.log(action.type);
     switch (action.type) {
+        case LOAD_DATA_BEGIN:
+            return {
+                ...state,
+                loading: true
+            }
+        case LOAD_DATA_SUCCESS:
+            return { 
+                ...state,
+                todos: action.payload,
+                loading: false
+            }
         default:
             return state
     }
 }
 
 export default function configureStore() {
-    const store = createStore(rootReducer, initialState);
+    const store = createStore(rootReducer, applyMiddleware(thunk));
     return store;
 }
