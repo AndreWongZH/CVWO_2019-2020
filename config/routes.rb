@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     !req.xhr? && req.format.html?
   end
 
+  resources :todos
 
   root 'static#index'
 end
