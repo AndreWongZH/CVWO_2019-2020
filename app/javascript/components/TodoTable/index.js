@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Segment } from 'semantic-ui-react'
+import { Table, Segment, Dimmer, Loader } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
 import { loadData } from '../store/actions'
@@ -22,9 +22,14 @@ class TodoTable extends Component {
         const { todos, loading } = this.props
 
         if (loading) {
-            return <div>I am LOADING</div>
+            return (
+                <div>
+                    <Dimmer inverted active>
+                        <Loader content='Loading' />
+                    </Dimmer>
+                </div>
+            )
         } else {
-            console.log(todos)
             return (
                 <Segment raised>
                     <Table padded selectable>

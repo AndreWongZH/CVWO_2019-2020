@@ -11,6 +11,7 @@ import NavBar from '../NavBar'
 import TodoTable from '../TodoTable'
 import TaskForm from '../TaskForm'
 import Focus from '../Focus'
+import { Container } from "semantic-ui-react";
 
 
 class App extends React.Component {
@@ -19,12 +20,14 @@ class App extends React.Component {
       <Provider store={store}>
         <BrowserRouter>
           <NavBar />
-          <Switch>
-            <Route exact path="/" render={() => <TodoTable /> } />
-            <Route path="/add" render={() => <TaskForm />} />
-            <Route path="/update" render={() => <TaskForm />} />
-            <Route path="/focus" render={() => <Focus />} />
-          </Switch>
+          <Container>
+            <Switch>
+              <Route exact path="/" render={() => <TodoTable /> } />
+              <Route path="/add" render={() => <TaskForm />} />
+              <Route path="/update" render={() => <TaskForm />} />
+              <Route path="/focus" render={() => <Focus />} />
+            </Switch>
+          </Container>
         </BrowserRouter>
       </Provider>
     );
