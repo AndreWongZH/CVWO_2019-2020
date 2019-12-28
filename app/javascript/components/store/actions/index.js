@@ -107,12 +107,9 @@ export const updateTodoFail = (message) => {
 export const deleteTodo = (id) => {
     return (dispatch) => {
         axios
-            .delete('/todos', {
-                params: {
-                    id
-                }
-            })
+            .delete(`/todos/${id}`)
             .then((res) => {
+                console.log(res)
                 dispatch(deleteTodoSuccess(res.data))
             })
             .catch((err) => {

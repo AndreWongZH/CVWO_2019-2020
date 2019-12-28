@@ -1,11 +1,11 @@
 import React from 'react';
-import { Header, Table } from 'semantic-ui-react'
+import { Header, Table, Icon, Button } from 'semantic-ui-react'
 
 import { capitalize, styleDate } from '../../Functions'
 
 import LabelCell from '../LabelCell'
 
-const TableRow = ({ data }) => {
+const TableRow = ({ data, handleDelete }) => {
     const tablerows = data.map((todo) => (
         <Table.Row key={todo.id} >
             <Table.Cell>
@@ -16,6 +16,11 @@ const TableRow = ({ data }) => {
             <Table.Cell>{ capitalize(todo.desc) }</Table.Cell>
             <Table.Cell>
                 <LabelCell data={todo.tag}/>
+            </Table.Cell>
+            <Table.Cell>
+                <Button icon onClick={handleDelete} id={todo.id}>
+                    <Icon name="close" color="red"/>
+                </Button>
             </Table.Cell>
         </Table.Row>
     ))

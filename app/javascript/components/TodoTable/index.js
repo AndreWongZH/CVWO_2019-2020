@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Header, Table, Segment, Dimmer, Loader, Message } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
-import { loadData, wipeMessage } from '../store/actions'
+import { loadData, wipeMessage, deleteTodo } from '../store/actions'
 
 import TableRow from '../TableRow'
 
@@ -10,7 +10,6 @@ import TableRow from '../TableRow'
 class TodoTable extends Component {
     constructor() {
         super();
-        
     }
 
     async componentDidMount() {
@@ -22,6 +21,15 @@ class TodoTable extends Component {
         const { wipeMessage } = this.props
         e.preventDefault()
         wipeMessage()
+    }
+
+    handleDelete = async (e) => {
+        const { deleteTodo, loadData } = this.props
+        e.preventDefault()
+        const id = (e.currentTarget.id)
+
+        await deleteTodo(id)
+        await loadData()
     }
 
     render() {
@@ -57,11 +65,12 @@ class TodoTable extends Component {
                                     <Table.HeaderCell>Deadline</Table.HeaderCell>
                                     <Table.HeaderCell>Summary</Table.HeaderCell>
                                     <Table.HeaderCell>Tags</Table.HeaderCell>
+                                    <Table.HeaderCell>Delete</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
 
                             <Table.Body>
-                                <TableRow data={todos} />
+                                <TableRow data={todos} handleDelete={this.handleDelete} />
                             </Table.Body>
                         </Table>
                     </Segment>
@@ -81,7 +90,8 @@ const matchStateToProps = (state) => {
 
 const matchDispatchToProps = (dispatch) => ({
     loadData: (payload) => dispatch(loadData(payload)),
-    wipeMessage: () => dispatch(wipeMessage())
+    wipeMessage: () => dispatch(wipeMessage()),
+    deleteTodo: (id) => dispatch(deleteTodo(id))
 })
 
 
