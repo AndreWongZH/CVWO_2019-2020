@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { loadData, wipeMessage, deleteTodo, updateNav } from '../store/actions'
 
-import TableRow from '../TableRow'
+import TableRow from './TableRow'
 
 
 class TodoTable extends Component {

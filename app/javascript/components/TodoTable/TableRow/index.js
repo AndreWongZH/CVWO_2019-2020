@@ -1,9 +1,9 @@
 import React from 'react';
 import { Header, Table, Icon, Button } from 'semantic-ui-react'
 
-import { capitalize, styleDate } from '../../Functions'
+import { capitalize, styleDate } from '../../../Functions'
 
-import LabelCell from '../LabelCell'
+import LabelCell from './LabelCell'
 
 const TableRow = ({ data, handleDelete, handleEdit }) => {
     const tablerows = data.map((todo) => (

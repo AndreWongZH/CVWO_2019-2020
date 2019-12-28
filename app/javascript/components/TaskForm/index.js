@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createTodo, updateNav, updateTodo } from '../store/actions'
 
-import FormInput from '../FormInput'
+import FormInput from './FormInput'
 
 import { formatDate } from '../../Functions'
 
