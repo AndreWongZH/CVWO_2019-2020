@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import { Button, Form, Grid, Header, Icon, Segment } from 'semantic-ui-react'
+import { Grid, Header, Icon, Dimmer, Loader } from 'semantic-ui-react'
+
+import axios from 'axios'
 
 import { Redirect } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { createTodo, updateNav } from '../store/actions'
+import { createTodo, updateNav, updateTodo } from '../store/actions'
+
+import FormInput from '../FormInput'
 
 import { formatDate } from '../../Functions'
 
@@ -16,7 +20,32 @@ class TaskForm extends Component {
       deadline: '',
       desc: '',
       tag: '',
-      redirect: false
+      redirect: false,
+      type: '',
+      loading: true
+    }
+  }
+
+  async componentDidMount() {
+    if (this.props.match.params.id){
+      this.setState({ type: 'update' })
+      const id = this.props.match.params.id
+      axios
+        .get(`/todos/${id}`)
+        .then((res) => {
+          this.setState({
+            title: res.data['title'],
+            deadline: res.data['deadline'],
+            desc: res.data['desc'],
+            tag: res.data['tag']
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        this.setState({ loading: false })
+    } else {
+      this.setState({ type: 'add', loading: false })
     }
   }
 
@@ -38,8 +67,8 @@ class TaskForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault()
-    const { title, deadline, desc, tag } = this.state
-    const { createTodo, updateNav } = this.props
+    const { type, title, deadline, desc, tag } = this.state
+    const { createTodo, updateNav, updateTodo } = this.props
 
     const created = new Date(Date.now())
     const data = {
@@ -51,85 +80,65 @@ class TaskForm extends Component {
       tag
     }
 
-    createTodo(data)
+    if (type === 'add') {
+      createTodo(data)
+    } else {
+      data['id'] = this.props.match.params.id
+      updateTodo(data)
+    }
+    
     updateNav('/')
     this.setState({ redirect: true })
   }
 
   render() {
-    const { redirect } = this.state
+    const { loading, redirect, type, title, deadline, desc, tag } = this.state
 
-    return (
-      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column  textAlign="left" style={{ maxWidth: 450 }}>
-          <Header as='h2' color='teal' textAlign='center'>
-            <Icon name='clipboard' /> Add your new task here
-          </Header>
-          <Form size='large'>
-            <Segment stacked>
-                <Form.Field>
-                    <label>Title</label>
-                    <Form.Input
-                      fluid
-                      icon='pencil alternate'
-                      iconPosition='left'
-                      placeholder='title'
-                      onChange={this.onTitleChange}
-                    />
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Deadline</label>
-                    <Form.Input
-                      fluid
-                      icon='clock'
-                      iconPosition='left'
-                      type='date'
-                      onChange={this.onDeadlineChange}
-                    />
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Description</label>
-                    <Form.TextArea
-                      placeholder='Enter description...'
-                      style={{ minHeight: 140}}
-                      onChange={this.onDescChange}
-                    />
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Tags</label>
-                    <Form.Input
-                      fluid
-                      icon='paperclip'
-                      iconPosition='left'
-                      placeholder='tags'
-                      onChange={this.onTagChange}
-                    />
-                </Form.Field>
-
-                <Button color='teal' fluid size='large' onClick={this.onSubmit}>
-                    Submit
-                </Button>
-            </Segment>
-          </Form>
-        </Grid.Column>
-        {redirect && <Redirect to='/' />}
-      </Grid>
-    )
+    if (loading) {
+      return (
+        <div>
+            <Dimmer inverted active>
+                <Loader content='Loading' />
+            </Dimmer>
+        </div>
+      )
+    } else {
+      return (
+        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+          <Grid.Column  textAlign="left" style={{ maxWidth: 450 }}>
+            <Header as='h2' color='teal' textAlign='center'>
+              <Icon name='clipboard' /> 
+              { type === 'add' ? 'Add your new task here' : 'Update task here' }
+            </Header>
+            <FormInput
+              onTitleChange={this.onTitleChange}
+              onDeadlineChange={this.onDeadlineChange}
+              onDescChange={this.onDescChange}
+              onTagChange={this.onTagChange}
+              onSubmit={this.onSubmit}
+              type={type}
+              title= {title}
+              deadline={deadline}
+              desc={desc}
+              tag={tag}
+            />
+          </Grid.Column>
+          {redirect && <Redirect to='/' />}
+        </Grid>
+      )
+    }
   }
 }
 
 const matchStateToProps = (state) => {
   return {
-      
   }
 }
 
 const matchDispatchToProps = (dispatch) => ({
   createTodo: (info) => dispatch(createTodo(info)),
-  updateNav:(payload) => dispatch(updateNav(payload))
+  updateTodo: (info) => dispatch(updateTodo(info)),
+  updateNav: (payload) => dispatch(updateNav(payload))
 })
 
 export default connect(matchStateToProps, matchDispatchToProps)(TaskForm)

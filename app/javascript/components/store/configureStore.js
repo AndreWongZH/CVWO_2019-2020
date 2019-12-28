@@ -62,7 +62,16 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 message: 'Failed to create a todo'
             }
-
+        case UPDATE_TODO_SUCCESS:
+            return {
+                ...state,
+                message: 'Todo has been updated'
+            }
+        case UPDATE_TODO_FAIL:
+            return {
+                ...state,
+                message: 'Failed to update a todo'
+            }
         case DELETE_TODO_SUCCESS:
             return {
                 ...state,

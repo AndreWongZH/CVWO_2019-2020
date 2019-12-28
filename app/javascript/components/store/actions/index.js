@@ -22,11 +22,11 @@ export const updateNav = (title) => {
     return { type: UPDATE_NAV, payload: title}
 }
 
-export const loadData = (payload) => {
+export const loadData = () => {
     return (dispatch) => {
         dispatch(loadDataBegin())
         axios
-            .get('/todos')
+            .get(`/todos`)
             .then((res) => {
                 dispatch(loadDataSuccess(res.data))
             })
@@ -78,13 +78,16 @@ export const createTodoFail = () => {
 };
 
 
-export const updateTodo = (info) => {
+export const updateTodo = ({ id, title, created, deadline, desc, done, tag }) => {
     return (dispatch) => {
         axios
-            .put('/todos', {
-                params: {
-                    info
-                }
+            .put(`/todos/${id}`, {
+                title,
+                created,
+                deadline,
+                desc,
+                done,
+                tag
             })
             .then((res) => {
                 dispatch(updateTodoSuccess(res.data))
