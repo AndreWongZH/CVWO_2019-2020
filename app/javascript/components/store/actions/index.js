@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import {
+    WIPE_MESSAGE,
     UPDATE_NAV,
     LOAD_DATA_BEGIN,
     LOAD_DATA_SUCCESS,
@@ -12,6 +13,10 @@ import {
     DELETE_TODO_FAIL,
     DELETE_TODO_SUCCESS
 } from '../constants'
+
+export const wipeMessage = () => {
+    return { type: WIPE_MESSAGE }
+}
 
 export const updateNav = (title) => {
     return { type: UPDATE_NAV, payload: title}
@@ -44,7 +49,7 @@ export const loadDataFail = (message) => {
 };
 
 
-export const createTodo = (info) => {
+export const createTodo = ({ title, created, deadline, desc, done, tag }) => {
     return (dispatch) => {
         axios
             .post('/todos', {
@@ -54,22 +59,22 @@ export const createTodo = (info) => {
                 desc,
                 done,
                 tag
-            } = info)
+            })
             .then((res) => {
-                dispatch(createTodoSuccess(res.data))
+                dispatch(createTodoSuccess())
             })
             .catch((err) => {
-                dispatch(createTodoFail(err.message))
+                dispatch(createTodoFail())
             })
     }
 };
 
-export const createTodoSuccess = (data) => {
-    return { type: CREATE_TODO_SUCCESS, payload: data };
+export const createTodoSuccess = () => {
+    return { type: CREATE_TODO_SUCCESS };
 };
 
-export const createTodoFail = (message) => {
-    return { type: CREATE_TODO_FAIL, payload: message };
+export const createTodoFail = () => {
+    return { type: CREATE_TODO_FAIL };
 };
 
 

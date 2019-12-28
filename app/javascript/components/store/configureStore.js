@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import {
+    WIPE_MESSAGE,
     UPDATE_NAV,
     LOAD_DATA_BEGIN,
     LOAD_DATA_SUCCESS,
@@ -17,12 +18,18 @@ import {
 const initialState = {
     todos: [],
     loading: true,
-    navRoute: '/'
+    navRoute: '/',
+    message: ''
 }
 
 function rootReducer(state = initialState, action) {
     console.log(action.type);
     switch (action.type) {
+        case WIPE_MESSAGE:
+            return {
+                ...state,
+                message: ''
+            }
         case UPDATE_NAV:
             return {
                 ...state,
@@ -38,6 +45,16 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 todos: action.payload,
                 loading: false
+            }
+        case CREATE_TODO_SUCCESS:
+            return {
+                ...state,
+                message: 'New todo has been added!'
+            }
+        case CREATE_TODO_FAIL:
+            return {
+                ...state,
+                message: 'Failed to create a todo'
             }
         default:
             return state

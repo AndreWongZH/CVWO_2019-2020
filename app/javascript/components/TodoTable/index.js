@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Table, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import { Header, Table, Segment, Dimmer, Loader, Message } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
-import { loadData } from '../store/actions'
+import { loadData, wipeMessage } from '../store/actions'
 
 import TableRow from '../TableRow'
 
@@ -18,8 +18,23 @@ class TodoTable extends Component {
         await loadData()
     }
 
+    handleMessage = (e) => {
+        const { wipeMessage } = this.props
+        e.preventDefault()
+        wipeMessage()
+    }
+
     render() {
-        const { todos, loading } = this.props
+        const { todos, loading, message } = this.props
+
+        const flashMessage =  message === ''
+            ? (<div></div>)
+            :   (<Message
+                    onDismiss={this.handleMessage}
+                    onClose={this.handleMessage}
+                >
+                    <Header>{message}</Header>
+                </Message>)
 
         if (loading) {
             return (
@@ -31,23 +46,26 @@ class TodoTable extends Component {
             )
         } else {
             return (
-                <Segment raised>
-                    <Table padded selectable>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell singleLine>Title</Table.HeaderCell>
-                                <Table.HeaderCell>Created</Table.HeaderCell>
-                                <Table.HeaderCell>Deadline</Table.HeaderCell>
-                                <Table.HeaderCell>Summary</Table.HeaderCell>
-                                <Table.HeaderCell>Tags</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+                <React.Fragment>
+                    {flashMessage}
+                    <Segment raised>
+                        <Table padded selectable>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell singleLine>Title</Table.HeaderCell>
+                                    <Table.HeaderCell>Created</Table.HeaderCell>
+                                    <Table.HeaderCell>Deadline</Table.HeaderCell>
+                                    <Table.HeaderCell>Summary</Table.HeaderCell>
+                                    <Table.HeaderCell>Tags</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
 
-                        <Table.Body>
-                            <TableRow data={todos} />
-                        </Table.Body>
-                    </Table>
-                </Segment>
+                            <Table.Body>
+                                <TableRow data={todos} />
+                            </Table.Body>
+                        </Table>
+                    </Segment>
+                </React.Fragment>
             )
         }
     }
@@ -56,12 +74,14 @@ class TodoTable extends Component {
 const matchStateToProps = (state) => {
     return {
         todos: state.todos,
-        loading: state.loading
+        loading: state.loading,
+        message: state.message
     }
 }
 
 const matchDispatchToProps = (dispatch) => ({
-    loadData: (payload) => dispatch(loadData(payload))
+    loadData: (payload) => dispatch(loadData(payload)),
+    wipeMessage: () => dispatch(wipeMessage())
 })
 
 
