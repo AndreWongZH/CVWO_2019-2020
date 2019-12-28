@@ -46,6 +46,12 @@ function rootReducer(state = initialState, action) {
                 todos: action.payload,
                 loading: false
             }
+        case LOAD_DATA_FAIL:
+            return {
+                ...state,
+                laoding: false,
+                message: 'Failed to load data'
+            }
         case CREATE_TODO_SUCCESS:
             return {
                 ...state,

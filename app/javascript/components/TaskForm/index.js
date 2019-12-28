@@ -4,7 +4,7 @@ import { Button, Form, Grid, Header, Icon, Segment } from 'semantic-ui-react'
 import { Redirect } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { createTodo } from '../store/actions'
+import { createTodo, updateNav } from '../store/actions'
 
 import { formatDate } from '../../Functions'
 
