@@ -23,8 +23,8 @@ class App extends React.Component {
           <Container>
             <Switch>
               <Route exact path="/" render={() => <TodoTable /> } />
-              <Route path="/add" render={() => <TaskForm />} />
-              <Route path="/update" render={() => <TaskForm />} />
+              <Route path="/add" render={(props) => <TaskForm {...props}/>} />
+              <Route path="/edit/:id" render={(props) => <TaskForm {...props}/>} />
               <Route path="/focus" render={() => <Focus />} />
             </Switch>
           </Container>

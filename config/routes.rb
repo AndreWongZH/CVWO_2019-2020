@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   !req.xhr? && req.format.html?
   end
 
+  get 'edit/:id', to: 'static#index', constraints: -> (req) do
+  !req.xhr? && req.format.html?
+  end
+
   resources :todos
 
   root 'static#index'
