@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import {
+    UPDATE_SORT,
     WIPE_MESSAGE,
     UPDATE_NAV,
     LOAD_DATA_BEGIN,
@@ -19,12 +20,25 @@ const initialState = {
     todos: [],
     loading: true,
     navRoute: '/',
-    message: ''
+    message: '',
+    sort: {
+        heading: 'deadline',
+        direction: 'ascending'
+    }
 }
 
 function rootReducer(state = initialState, action) {
     console.log(action.type);
     switch (action.type) {
+        case UPDATE_SORT:
+            return {
+                ...state,
+                loading: true,
+                sort: {
+                    heading: action.payload.heading,
+                    direction: action.payload.direction
+                }
+            }
         case WIPE_MESSAGE:
             return {
                 ...state,
