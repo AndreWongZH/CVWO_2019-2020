@@ -22,7 +22,7 @@ class App extends React.Component {
           <NavBar />
           <Container>
             <Switch>
-              <Route exact path="/" render={() => <TodoTable /> } />
+              <Route exact path="/" render={(props) => <TodoTable {...props}/> } />
               <Route path="/add" render={(props) => <TaskForm {...props}/>} />
               <Route path="/edit/:id" render={(props) => <TaskForm {...props}/>} />
               <Route path="/focus" render={() => <Focus />} />

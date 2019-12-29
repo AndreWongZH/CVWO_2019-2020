@@ -3,7 +3,12 @@ class TodosController < ApplicationController
 
 	# GET /todos
 	def index
-		@todos = Todo.all
+		@sort = params[:sort]
+		@ascend = params[:ascend] || 'ascending'
+
+		@search = params[:search]
+
+		@todos = Todo.apply_sort(@sort, @ascend).apply_search(@search)
 		json_response(@todos)
 	end
 

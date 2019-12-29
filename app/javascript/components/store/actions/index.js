@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 import {
+    UPDATE_SEARCH,
+    UPDATE_SORT,
     WIPE_MESSAGE,
     UPDATE_NAV,
     LOAD_DATA_BEGIN,
@@ -14,6 +16,26 @@ import {
     DELETE_TODO_SUCCESS
 } from '../constants'
 
+export const updateTable = (values) => {
+    return (dispatch) => {
+        if (values.search === undefined) {
+            dispatch(updateSort(values))
+        } else {
+            dispatch(updateSearch(values))
+        }
+        
+        dispatch(loadData())
+    }
+}
+
+export const updateSearch = (search_value) => {
+    return { type: UPDATE_SEARCH, payload: search_value}
+}
+
+export const updateSort = (sort_values) => {
+    return { type: UPDATE_SORT, payload: sort_values}
+}
+
 export const wipeMessage = () => {
     return { type: WIPE_MESSAGE }
 }
@@ -23,10 +45,11 @@ export const updateNav = (title) => {
 }
 
 export const loadData = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch(loadDataBegin())
+        const link = `/todos/?sort=${ getState().sort.heading }&ascend=${ getState().sort.direction }&search=${ getState().sort.search }`
         axios
-            .get(`/todos`)
+            .get(link)
             .then((res) => {
                 dispatch(loadDataSuccess(res.data))
             })

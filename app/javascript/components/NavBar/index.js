@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { Menu, Input } from 'semantic-ui-react'
+import { Menu, Input, Button } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
-import { updateNav } from '../store/actions'
+import { updateNav, updateTable } from '../store/actions'
+
 import { Redirect } from 'react-router-dom'
 
 class NavBar extends Component {
   constructor() {
     super()
     this.state = {
-      redirect: false
+      redirect: false,
+      search: ''
     }
   }
 
@@ -19,9 +21,36 @@ class NavBar extends Component {
     this.setState({ redirect: true })
   }
 
+  handleKeyDown = (e) => {
+    const { updateTable } = this.props
+
+    if (e.key === 'Enter') {
+      const search = e.target.value
+      updateTable({
+        search
+      })
+    }
+  }
+  
+  handleSearchChange = (e) => {
+    this.setState({ search: e.target.value })
+  }
+
+  handleReset = () => {
+    const { updateTable } = this.props
+    const { search } = this.state
+
+    if (search !== '') {
+      this.setState({ search: '' })
+      updateTable({
+        search: ''
+      })
+    }
+  }
+
   render() {
     const { navRoute } = this.props
-    const { redirect } = this.state
+    const { redirect, search } = this.state
 
     return (
       <div>
@@ -46,7 +75,15 @@ class NavBar extends Component {
           />
           <Menu.Menu position='right'>
             <Menu.Item>
-              <Input className='icon' icon='search' placeholder='Search...' />
+              <Input
+                className='icon'
+                icon='search'
+                placeholder='Search...'
+                value={search}
+                onChange={this.handleSearchChange}
+                onKeyDown={this.handleKeyDown}
+              />
+              <Button onClick={this.handleReset }>Reset</Button>
             </Menu.Item>
           </Menu.Menu>
         </Menu>
@@ -63,7 +100,8 @@ const matchStateToProps = (state) => {
 }
 
 const matchDispatchToProps = (dispatch) => ({
-  updateNav: (title) => dispatch(updateNav(title))
+  updateNav: (title) => dispatch(updateNav(title)),
+  updateTable: (values) => dispatch(updateTable(values))
 })
 
 export default connect(matchStateToProps, matchDispatchToProps)(NavBar);
