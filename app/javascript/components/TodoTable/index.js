@@ -156,7 +156,7 @@ const matchDispatchToProps = (dispatch) => ({
     wipeMessage: () => dispatch(wipeMessage()),
     deleteTodo: (id) => dispatch(deleteTodo(id)),
     updateNav:(payload) => dispatch(updateNav(payload)),
-    updateTable:(sort_values) => dispatch(updateTable(sort_values))
+    updateTable:(values) => dispatch(updateTable(values))
 })
 
 

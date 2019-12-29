@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import {
+    UPDATE_SEARCH,
     UPDATE_SORT,
     WIPE_MESSAGE,
     UPDATE_NAV,
@@ -15,11 +16,20 @@ import {
     DELETE_TODO_SUCCESS
 } from '../constants'
 
-export const updateTable = (sort_values) => {
+export const updateTable = (values) => {
     return (dispatch) => {
-        dispatch(updateSort(sort_values))
+        if (values.search === undefined) {
+            dispatch(updateSort(values))
+        } else {
+            dispatch(updateSearch(values))
+        }
+        
         dispatch(loadData())
     }
+}
+
+export const updateSearch = (search_value) => {
+    return { type: UPDATE_SEARCH, payload: search_value}
 }
 
 export const updateSort = (sort_values) => {
@@ -37,7 +47,7 @@ export const updateNav = (title) => {
 export const loadData = () => {
     return (dispatch, getState) => {
         dispatch(loadDataBegin())
-        const link = `/todos/?sort=${ getState().sort.heading }&ascend=${ getState().sort.direction }`
+        const link = `/todos/?sort=${ getState().sort.heading }&ascend=${ getState().sort.direction }&search=${ getState().sort.search }`
         axios
             .get(link)
             .then((res) => {

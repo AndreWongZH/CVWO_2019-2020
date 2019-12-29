@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import {
+    UPDATE_SEARCH,
     UPDATE_SORT,
     WIPE_MESSAGE,
     UPDATE_NAV,
@@ -23,18 +24,29 @@ const initialState = {
     message: '',
     sort: {
         heading: 'deadline',
-        direction: 'ascending'
+        direction: 'ascending',
+        search: ''
     }
 }
 
 function rootReducer(state = initialState, action) {
     console.log(action.type);
     switch (action.type) {
+        case UPDATE_SEARCH:
+            return {
+                ...state,
+                loading: true,
+                sort: {
+                    ...state.sort,
+                    search: action.payload.search
+                }
+            }
         case UPDATE_SORT:
             return {
                 ...state,
                 loading: true,
                 sort: {
+                    ...state.sort,
                     heading: action.payload.heading,
                     direction: action.payload.direction
                 }
