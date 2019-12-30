@@ -1,44 +1,128 @@
-import React from 'react'
-import { Image, Item, Header, Icon, Segment } from 'semantic-ui-react'
+import React, { Component } from 'react'
+import { Grid, Header, Icon, Segment, Dimmer, Loader, Button } from 'semantic-ui-react'
 
-const Focus = () => (
-    <React.Fragment>
-        <div>
-            <Header as='h2' icon textAlign='center'>
-                <Icon name='users' circular />
-                <Header.Content>Friends</Header.Content>
-            </Header>
-        </div>
-        <Segment>
-            <Item.Group>
-                <Item>
-                <Item.Image size='tiny' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+import { connect } from 'react-redux'
+import { loadFocus, updateCategory } from '../store/actions'
 
-                <Item.Content>
-                    <Item.Header as='a'>Header</Item.Header>
-                    <Item.Meta>Description</Item.Meta>
-                    <Item.Description>
-                    <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
-                    </Item.Description>
-                    <Item.Extra>Additional Details</Item.Extra>
-                </Item.Content>
-                </Item>
+import ItemSegment from './ItemSegment'
+import CategoryHeader from './CategoryHeader'
 
-                <Item>
-                <Item.Image size='tiny' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+class Focus extends Component {
 
-                <Item.Content>
-                    <Item.Header as='a'>Header</Item.Header>
-                    <Item.Meta>Description</Item.Meta>
-                    <Item.Description>
-                    <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
-                    </Item.Description>
-                    <Item.Extra>Additional Details</Item.Extra>
-                </Item.Content>
-                </Item>
-            </Item.Group>
-        </Segment>
-    </React.Fragment>
-)
+    async componentDidMount() {
+        const { loadFocus } = this.props;
+        await loadFocus()
+    }
 
-export default Focus
+    hide = (category) => () => {
+        const { updateCategory, focusCategory } = this.props;
+        const data = {}
+
+        if (category === 'today') {
+            data.today = !focusCategory.today
+        }
+        if (category === 'past') {
+            data.past = !focusCategory.past
+        }
+        if (category === 'tmr') {
+            data.tmr = !focusCategory.tmr
+        }
+        if (category === 'impt') {
+            data.impt = !focusCategory.impt
+        }
+
+        updateCategory(data)
+    }
+
+    render() {
+        const { loading, focus, focusCategory } = this.props
+
+        if (loading) {
+            return (
+                <div>
+                    <Dimmer inverted active>
+                        <Loader content='Loading' />
+                    </Dimmer>
+                </div>
+            )
+        } else {
+            return(
+                <React.Fragment>
+                    <Segment>
+                        <Header as='h1' icon textAlign='center'>
+                            <Icon name='coffee' circular />
+                            <Header.Content>At a glance...</Header.Content>
+                        </Header>
+                        <Grid columns={3} divided centered>
+                            <Grid.Row>
+                                <Grid.Column width={4}>
+                                    <CategoryHeader
+                                        hide={this.hide}
+                                        iconName='archive'
+                                        type='past'
+                                        headingName='Overdue Tasks'
+                                        focusCategory={focusCategory.past}
+                                    />
+                                    <ItemSegment data={focus.past} visible={focusCategory.past} />
+                                </Grid.Column>
+
+
+                                <Grid.Column width={8}>
+                                    <CategoryHeader
+                                        hide={this.hide}
+                                        iconName='bullseye'
+                                        type='today'
+                                        headingName="Today's Tasks"
+                                        focusCategory={focusCategory.today}
+                                    />
+                                    <ItemSegment data={focus.today} visible={focusCategory.today} />
+                                </Grid.Column>
+
+
+                                <Grid.Column width={4}>
+                                    <CategoryHeader
+                                        hide={this.hide}
+                                        iconName='binoculars'
+                                        type='tmr'
+                                        headingName="Tomorrow's Tasks"
+                                        focusCategory={focusCategory.tmr}
+                                    />
+                                    <ItemSegment data={focus.tmr} visible={focusCategory.tmr} />
+                                </Grid.Column>
+                            </Grid.Row>
+
+                            <Grid.Row>
+                                <Grid.Column floated="right" width={4}>
+                                    <CategoryHeader
+                                        hide={this.hide}
+                                        iconName='thumbtack'
+                                        type='impt'
+                                        headingName='Important Task'
+                                        focusCategory={focusCategory.impt}
+                                    />
+                                    <ItemSegment data={focus.impt} visible={focusCategory.impt} />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Segment>
+                </React.Fragment>
+            )
+        }
+    }
+}
+
+const matchStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        focus: state.focus,
+        focusCategory: state.focusCategory
+    }
+}
+
+const matchDispatchToProps = (dispatch) => ({
+    loadFocus: () => dispatch(loadFocus()),
+    updateCategory: (category) => dispatch(updateCategory(category))
+})
+
+
+export default connect(matchStateToProps, matchDispatchToProps)(Focus)
