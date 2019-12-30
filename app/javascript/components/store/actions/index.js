@@ -1,6 +1,10 @@
 import axios from 'axios'
 
 import {
+    UPDATE_CATEGORY,
+    LOAD_FOCUS_BEGIN,
+    LOAD_FOCUS_SUCCESS,
+    LOAD_FOCUS_FAIL,
     UPDATE_SEARCH,
     UPDATE_SORT,
     WIPE_MESSAGE,
@@ -16,6 +20,37 @@ import {
     DELETE_TODO_SUCCESS
 } from '../constants'
 
+export const updateCategory = (data) => {
+    return { type: UPDATE_CATEGORY, payload: data};
+}
+
+export const loadFocus = () => {
+    return (dispatch) => {
+        dispatch(loadFocusBegin())
+        axios
+            .get('/todos/focus')
+            .then((res) => {
+                dispatch(loadFocusSuccess(res.data))
+            })
+            .catch((err) => {
+                dispatch(loadFocusFail(err.message))
+            })
+    }
+};
+
+export const loadFocusBegin = () => {
+    return { type: LOAD_FOCUS_BEGIN };
+};
+
+export const loadFocusSuccess = (data) => {
+    return { type: LOAD_FOCUS_SUCCESS, payload: data };
+};
+
+export const loadFocusFail = () => {
+    return { type: LOAD_FOCUS_FAIL };
+};
+
+
 export const updateTable = (values) => {
     return (dispatch) => {
         if (values.search === undefined) {
@@ -29,11 +64,11 @@ export const updateTable = (values) => {
 }
 
 export const updateSearch = (search_value) => {
-    return { type: UPDATE_SEARCH, payload: search_value}
+    return { type: UPDATE_SEARCH, payload: search_value }
 }
 
 export const updateSort = (sort_values) => {
-    return { type: UPDATE_SORT, payload: sort_values}
+    return { type: UPDATE_SORT, payload: sort_values }
 }
 
 export const wipeMessage = () => {
@@ -41,7 +76,7 @@ export const wipeMessage = () => {
 }
 
 export const updateNav = (title) => {
-    return { type: UPDATE_NAV, payload: title}
+    return { type: UPDATE_NAV, payload: title }
 }
 
 export const loadData = () => {
@@ -60,15 +95,15 @@ export const loadData = () => {
 };
 
 export const loadDataBegin = () => {
-    return { type: LOAD_DATA_BEGIN};
+    return { type: LOAD_DATA_BEGIN };
 };
 
 export const loadDataSuccess = (data) => {
     return { type: LOAD_DATA_SUCCESS, payload: data };
 };
 
-export const loadDataFail = (message) => {
-    return { type: LOAD_DATA_FAIL, payload: message };
+export const loadDataFail = () => {
+    return { type: LOAD_DATA_FAIL };
 };
 
 

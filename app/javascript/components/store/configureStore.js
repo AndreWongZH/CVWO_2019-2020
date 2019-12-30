@@ -2,6 +2,10 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import {
+    UPDATE_CATEGORY,
+    LOAD_FOCUS_BEGIN,
+    LOAD_FOCUS_SUCCESS,
+    LOAD_FOCUS_FAIL,
     UPDATE_SEARCH,
     UPDATE_SORT,
     WIPE_MESSAGE,
@@ -26,12 +30,56 @@ const initialState = {
         heading: 'deadline',
         direction: 'ascending',
         search: ''
+    },
+    focus: {
+        today: [],
+        tmr: [],
+        past: [],
+        impt: []
+    },
+    focusCategory: {
+        today: true,
+        tmr: true,
+        past: true,
+        impt: true
     }
 }
 
 function rootReducer(state = initialState, action) {
     console.log(action.type);
     switch (action.type) {
+        case UPDATE_CATEGORY:
+            return {
+                ...state,
+                focusCategory: {
+                    today: action.payload.today !== undefined ? action.payload.today : state.focusCategory.today,
+                    tmr: action.payload.tmr !== undefined ? action.payload.tmr : state.focusCategory.tmr,
+                    past: action.payload.past !== undefined ? action.payload.past : state.focusCategory.past,
+                    impt: action.payload.impt !== undefined ? action.payload.impt : state.focusCategory.impt
+                }
+            }
+        case LOAD_FOCUS_BEGIN:
+            return {
+                ...state,
+                loading: true
+            }
+        case LOAD_FOCUS_SUCCESS:
+            return {
+                ...state,
+                focus: {
+                    today: action.payload.today,
+                    tmr: action.payload.tmr,
+                    past: action.payload.past,
+                    impt: action.payload.impt
+                },
+                loading: false
+            }
+        case LOAD_FOCUS_FAIL:
+            return {
+                ...state,
+                laoding: false,
+                message: 'Failed to load data'
+            }
         case UPDATE_SEARCH:
             return {
                 ...state,
