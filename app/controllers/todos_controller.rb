@@ -35,6 +35,23 @@ class TodosController < ApplicationController
 		head :no_content
 	end
 
+	# GET /todos/focus
+	def focus
+		@past = Todo.search_past()
+		@today = Todo.search_today()
+		@tmr = Todo.search_tmr()
+		@impt = Todo.search_impt()
+
+		@data = {
+			:past => @past,
+			:today => @today,
+			:tmr => @tmr,
+			:impt => @impt
+		}
+
+		json_response(@data)
+	end
+
 	private
 	
 	def todo_params
