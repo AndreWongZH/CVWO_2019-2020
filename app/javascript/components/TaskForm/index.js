@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Header, Icon, Dimmer, Loader } from 'semantic-ui-react'
+import { Grid, Header, Icon, Dimmer, Loader, Container } from 'semantic-ui-react'
 
 import axios from 'axios'
 
@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { createTodo, updateNav, updateTodo } from '../store/actions'
 
 import FormInput from './FormInput'
+import NavBar from '../NavBar'
 
 import { formatDate } from '../../Functions'
 
@@ -104,27 +105,32 @@ class TaskForm extends Component {
       )
     } else {
       return (
-        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-          <Grid.Column  textAlign="left" style={{ maxWidth: 450 }}>
-            <Header as='h2' color='teal' textAlign='center'>
-              <Icon name='clipboard' /> 
-              { type === 'add' ? 'Add your new task here' : 'Update task here' }
-            </Header>
-            <FormInput
-              onTitleChange={this.onTitleChange}
-              onDeadlineChange={this.onDeadlineChange}
-              onDescChange={this.onDescChange}
-              onTagChange={this.onTagChange}
-              onSubmit={this.onSubmit}
-              type={type}
-              title= {title}
-              deadline={deadline}
-              desc={desc}
-              tag={tag}
-            />
-          </Grid.Column>
-          {redirect && <Redirect to='/' />}
-        </Grid>
+        <React.Fragment>
+          <NavBar {...this.props} />
+          <Container>
+            <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+              <Grid.Column  textAlign="left" style={{ maxWidth: 450 }}>
+                <Header as='h2' color='teal' textAlign='center'>
+                  <Icon name='clipboard' /> 
+                  { type === 'add' ? 'Add your new task here' : 'Update task here' }
+                </Header>
+                <FormInput
+                  onTitleChange={this.onTitleChange}
+                  onDeadlineChange={this.onDeadlineChange}
+                  onDescChange={this.onDescChange}
+                  onTagChange={this.onTagChange}
+                  onSubmit={this.onSubmit}
+                  type={type}
+                  title= {title}
+                  deadline={deadline}
+                  desc={desc}
+                  tag={tag}
+                />
+              </Grid.Column>
+              {redirect && <Redirect to='/' />}
+            </Grid>
+          </Container>
+        </React.Fragment>
       )
     }
   }

@@ -19,15 +19,12 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <NavBar />
-          <Container>
-            <Switch>
-              <Route exact path="/" render={(props) => <TodoTable {...props}/> } />
-              <Route path="/add" render={(props) => <TaskForm {...props}/>} />
-              <Route path="/edit/:id" render={(props) => <TaskForm {...props}/>} />
-              <Route path="/focus" render={() => <Focus />} />
-            </Switch>
-          </Container>
+          <Switch>
+            <Route exact path="/" render={(props) => <TodoTable {...props}/> } />
+            <Route path="/add" render={(props) => <TaskForm {...props}/>} />
+            <Route path="/edit/:id" render={(props) => <TaskForm {...props}/>} />
+            <Route path="/focus" render={(props) => <Focus {...props}/>} />
+          </Switch>
         </BrowserRouter>
       </Provider>
     );

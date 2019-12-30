@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Menu, Input, Button } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
 import { updateNav, updateTable } from '../store/actions'
 
 import { Redirect } from 'react-router-dom'
+
+import SearchBar from './SearchBar'
 
 class NavBar extends Component {
   constructor() {
@@ -13,6 +15,17 @@ class NavBar extends Component {
       redirect: false,
       search: ''
     }
+  }
+
+  componentDidMount() {
+    const { updateNav, location, sort } = this.props
+    if (location.pathname.match(/edit/)) {
+      updateNav('/edit')
+    } else {
+      updateNav(location.pathname)
+    }
+
+    this.setState({ search: sort.search })
   }
 
   handleItemClick = (e, { name }) => {
@@ -55,37 +68,39 @@ class NavBar extends Component {
     return (
       <div>
         <Menu pointing secondary>
-          <Menu.Item
+          <Menu.Item style={{ paddingTop: "16px", paddingBottom: '16px' }}
             name="/"
             content='Todo Dashboard'
             active={navRoute === '/'}
             onClick={this.handleItemClick}
           />
-          <Menu.Item
+          <Menu.Item style={{ paddingTop: "16px", paddingBottom: '16px' }}
             name="/add"
             content='Add new task'
             active={navRoute === '/add'}
             onClick={this.handleItemClick}
           />
-          <Menu.Item
+          <Menu.Item style={{ paddingTop: "16px", paddingBottom: '16px' }}
             name="/focus"
             content='Focus on Me'
             active={navRoute === '/focus'}
             onClick={this.handleItemClick}
           />
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              <Input
-                className='icon'
-                icon='search'
-                placeholder='Search...'
-                value={search}
-                onChange={this.handleSearchChange}
-                onKeyDown={this.handleKeyDown}
-              />
-              <Button onClick={this.handleReset }>Reset</Button>
-            </Menu.Item>
-          </Menu.Menu>
+          {navRoute === '/edit' &&
+            <Menu.Item style={{ paddingTop: "16px", paddingBottom: '16px' }}
+              name="/edit"
+              content='Update todo'
+              active={navRoute === '/edit'}
+            />
+          }
+          {navRoute === '/' && 
+            <SearchBar 
+              handleSearchChange={this.handleSearchChange}
+              handleKeyDown={this.handleKeyDown}
+              handleReset={this.handleReset}
+              search={search}
+            />
+          }
         </Menu>
         {redirect && <Redirect to={navRoute} />}
       </div>
@@ -95,7 +110,8 @@ class NavBar extends Component {
 
 const matchStateToProps = (state) => {
   return {
-    navRoute: state.navRoute
+    navRoute: state.navRoute,
+    sort: state.sort
   }
 }
 

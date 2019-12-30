@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Header, Table, Segment, Dimmer, Loader, Message } from 'semantic-ui-react'
+import { Header, Table, Segment, Dimmer, Loader, Message, Container } from 'semantic-ui-react'
 
 import { Redirect } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { loadData, wipeMessage, deleteTodo, updateNav, updateTable } from '../store/actions'
 
 import TableRow from './TableRow'
+import NavBar from '../NavBar'
 
 
 class TodoTable extends Component {
@@ -88,54 +89,57 @@ class TodoTable extends Component {
         } else {
             return (
                 <React.Fragment>
-                    {flashMessage}
-                    {redirect && <Redirect to={`/edit/${id}`} />}
-                    <Segment raised>
-                        <Table padded sortable selectable>
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell 
-                                        sorted={sort.heading === 'title' ? sort.direction : null}
-                                        onClick={this.handleSort('title')}
-                                    >
-                                        Title
-                                    </Table.HeaderCell>
+                    <NavBar {...this.props}/>
+                    <Container>
+                        {flashMessage}
+                        {redirect && <Redirect to={`/edit/${id}`} />}
+                        <Segment raised>
+                            <Table padded sortable selectable>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell 
+                                            sorted={sort.heading === 'title' ? sort.direction : null}
+                                            onClick={this.handleSort('title')}
+                                        >
+                                            Title
+                                        </Table.HeaderCell>
 
-                                    <Table.HeaderCell 
-                                        sorted={sort.heading === 'created' ? sort.direction : null}
-                                        onClick={this.handleSort('created')}
-                                    >
-                                        Created
-                                    </Table.HeaderCell>
+                                        <Table.HeaderCell 
+                                            sorted={sort.heading === 'created' ? sort.direction : null}
+                                            onClick={this.handleSort('created')}
+                                        >
+                                            Created
+                                        </Table.HeaderCell>
 
-                                    <Table.HeaderCell 
-                                        sorted={sort.heading === 'deadline' ? sort.direction : null}
-                                        onClick={this.handleSort('deadline')}
-                                    >
-                                        Deadline
-                                    </Table.HeaderCell>
+                                        <Table.HeaderCell 
+                                            sorted={sort.heading === 'deadline' ? sort.direction : null}
+                                            onClick={this.handleSort('deadline')}
+                                        >
+                                            Deadline
+                                        </Table.HeaderCell>
 
-                                    <Table.HeaderCell 
-                                        sorted={sort.heading === 'desc' ? sort.direction : null}
-                                        onClick={this.handleSort('desc')}
-                                    >
-                                        Description
-                                    </Table.HeaderCell>
-                                    <Table.HeaderCell>Tags</Table.HeaderCell>
-                                    <Table.HeaderCell>Delete</Table.HeaderCell>
-                                    <Table.HeaderCell>Edit</Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
+                                        <Table.HeaderCell 
+                                            sorted={sort.heading === 'desc' ? sort.direction : null}
+                                            onClick={this.handleSort('desc')}
+                                        >
+                                            Description
+                                        </Table.HeaderCell>
+                                        <Table.HeaderCell>Tags</Table.HeaderCell>
+                                        <Table.HeaderCell>Delete</Table.HeaderCell>
+                                        <Table.HeaderCell>Edit</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
 
-                            <Table.Body>
-                                <TableRow
-                                    data={todos}
-                                    handleDelete={this.handleDelete}
-                                    handleEdit={this.handleEdit}
-                                />
-                            </Table.Body>
-                        </Table>
-                    </Segment>
+                                <Table.Body>
+                                    <TableRow
+                                        data={todos}
+                                        handleDelete={this.handleDelete}
+                                        handleEdit={this.handleEdit}
+                                    />
+                                </Table.Body>
+                            </Table>
+                        </Segment>
+                    </Container>
                 </React.Fragment>
             )
         }
