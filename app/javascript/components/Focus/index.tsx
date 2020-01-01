@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import {
   Grid, Header, Icon, Segment, Dimmer, Loader, Container,
 } from 'semantic-ui-react';
@@ -8,17 +8,23 @@ import { loadFocus, updateCategory } from '../store/actions';
 
 import ItemSegment from './ItemSegment';
 import CategoryHeader from './CategoryHeader';
-import NavBar from '../NavBar';
+import { ReduxStateType, UpdateCategoryDataType } from '../TypeDeclarations';
+import { LoadFocusType, UpdateCategoryType } from '../store/actions/ActionDeclaration';
 
-class Focus extends Component {
+type FocusProps = {
+  loadFocus: LoadFocusType,
+  updateCategory: UpdateCategoryType
+}
+
+class Focus extends React.Component<FocusProps & ReduxStateType> {
   async componentDidMount() {
     const { loadFocus } = this.props;
     await loadFocus();
   }
 
-  hide = (category) => () => {
+  hide = (category: string) => () => {
     const { updateCategory, focusCategory } = this.props;
-    const data = {};
+    const data: UpdateCategoryDataType = {};
 
     if (category === 'today') {
       data.today = !focusCategory.today;
@@ -50,7 +56,6 @@ class Focus extends Component {
     }
     return (
       <>
-        <NavBar {...this.props} />
         <Container>
           <Segment>
             <Header as="h1" icon textAlign="center">
@@ -115,7 +120,7 @@ class Focus extends Component {
   }
 }
 
-const matchStateToProps = (state) => {
+const matchStateToProps = (state: ReduxStateType) => {
   return {
     loading: state.loading,
     focus: state.focus,
@@ -123,9 +128,9 @@ const matchStateToProps = (state) => {
   };
 };
 
-const matchDispatchToProps = (dispatch) => ({
+const matchDispatchToProps = (dispatch: Function) => ({
   loadFocus: () => dispatch(loadFocus()),
-  updateCategory: (category) => dispatch(updateCategory(category)),
+  updateCategory: (category: UpdateCategoryDataType) => dispatch(updateCategory(category)),
 });
 
 

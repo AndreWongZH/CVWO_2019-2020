@@ -1,6 +1,23 @@
-import React from 'react';
+import * as React from 'react';
 
-import { Form, Segment, Button } from 'semantic-ui-react';
+import {
+  Form, Segment, Button, TextAreaProps,
+} from 'semantic-ui-react';
+
+import { OnChangeEventType, OnChangeTextAreaEventType, OnClickEventType } from '../../TypeDeclarations';
+
+type FormInputProps = {
+  title: string,
+  deadline: string,
+  desc: string | number,
+  tag: string,
+  type: string,
+  onTitleChange: (e: OnChangeEventType) => void,
+  onDeadlineChange: (e: OnChangeEventType) => void,
+  onDescChange: (e: OnChangeTextAreaEventType, data: TextAreaProps) => void,
+  onTagChange: (e: OnChangeEventType) => void,
+  onSubmit: (e: OnClickEventType) => void,
+}
 
 const FormInput = ({
   title,
@@ -13,7 +30,7 @@ const FormInput = ({
   onDescChange,
   onTagChange,
   onSubmit,
-}) => {
+}: FormInputProps) => {
   const FormTotal = (
     <Form size="large">
       <Segment stacked>

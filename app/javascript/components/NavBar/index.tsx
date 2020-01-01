@@ -1,16 +1,31 @@
-import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import * as React from 'react';
+import { Menu, MenuItemProps } from 'semantic-ui-react';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { updateNav, updateTable } from '../store/actions';
 
 import SearchBar from './SearchBar';
+import {
+  ReduxStateType, OnChangeEventType, OnClickEventType, UpdateTableValuesType,
+} from '../TypeDeclarations';
+import { UpdateNavType, UpdateTableType } from '../store/actions/ActionDeclaration';
 
-class NavBar extends Component {
-  constructor() {
-    super();
+type NavBarProps = {
+  updateNav: UpdateNavType,
+  updateTable: UpdateTableType,
+}
+
+type NavBarState = {
+  redirect: Boolean,
+  search: string
+}
+
+class NavBar extends React.Component<
+NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
+  constructor(props: NavBarProps & ReduxStateType & RouteComponentProps) {
+    super(props);
     this.state = {
       redirect: false,
       search: '',
@@ -19,36 +34,47 @@ class NavBar extends Component {
 
   componentDidMount() {
     const { updateNav, location, sort } = this.props;
+
     if (location.pathname.match(/edit/)) {
-      updateNav('/edit');
+      updateNav({ title: '/edit' });
     } else {
-      updateNav(location.pathname);
+      updateNav({ title: location.pathname });
     }
 
     this.setState({ search: sort.search });
   }
 
-  handleItemClick = (e, { name }) => {
-    const { updateNav } = this.props;
-    updateNav(name);
-    this.setState({ redirect: true });
+  // used to toggle navigation bar and redirect to correct route
+  handleItemClick = (e: OnClickEventType, data: MenuItemProps) => {
+    const { updateNav, navRoute } = this.props;
+
+    if (data.name !== navRoute) {
+      if (data.name === '/focus' || data.name === '/') {
+        updateNav({ title: data.name, loading: true });
+      } else {
+        updateNav({ title: data.name });
+      }
+
+      this.setState({ redirect: true });
+    }
   }
 
-  handleKeyDown = (e) => {
+  handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const { updateTable } = this.props;
+    const { search } = this.state;
 
     if (e.key === 'Enter') {
-      const search = e.target.value;
       updateTable({
         search,
       });
     }
   }
 
-  handleSearchChange = (e) => {
+  handleSearchChange = (e: OnChangeEventType) => {
     this.setState({ search: e.target.value });
   }
 
+  // reset search query
   handleReset = () => {
     const { updateTable } = this.props;
     const { search } = this.state;
@@ -114,16 +140,20 @@ class NavBar extends Component {
   }
 }
 
-const matchStateToProps = (state) => {
+const matchStateToProps = (state: ReduxStateType) => {
   return {
     navRoute: state.navRoute,
     sort: state.sort,
   };
 };
 
-const matchDispatchToProps = (dispatch) => ({
-  updateNav: (title) => dispatch(updateNav(title)),
-  updateTable: (values) => dispatch(updateTable(values)),
+
+const matchDispatchToProps = (dispatch: Function) => ({
+  updateNav: ({
+    title, loading,
+  }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
+  updateTable: (values: UpdateTableValuesType) => dispatch(updateTable(values)),
 });
 
-export default connect(matchStateToProps, matchDispatchToProps)(NavBar);
+// used as any as a work-around for typescript because withRouter is not compatible() with connect()
+export default withRouter(connect(matchStateToProps, matchDispatchToProps)(NavBar)) as any;

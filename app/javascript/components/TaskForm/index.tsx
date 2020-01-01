@@ -1,23 +1,45 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import {
-  Grid, Header, Icon, Dimmer, Loader, Container,
+  Grid, Header, Icon, Dimmer, Loader, Container, TextAreaProps,
 } from 'semantic-ui-react';
 
 import axios from 'axios';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { createTodo, updateNav, updateTodo } from '../store/actions';
 
 import FormInput from './FormInput';
-import NavBar from '../NavBar';
 
 import { formatDate } from '../../Functions';
 
-class TaskForm extends Component {
-  constructor() {
-    super();
+import {
+  OnChangeEventType, TodoObjectType, OnChangeTextAreaEventType, OnClickEventType,
+} from '../TypeDeclarations';
+import { CreateTodoType, UpdateNavType, UpdateTodoType } from '../store/actions/ActionDeclaration';
+
+type TaskFormProps = {
+  createTodo: CreateTodoType,
+  updateNav: UpdateNavType,
+  updateTodo: UpdateTodoType,
+}
+
+type TaskFormState = {
+  title: string,
+  deadline: string,
+  desc: string | number,
+  tag: string,
+  redirect: Boolean,
+  type: string,
+  loading: Boolean,
+}
+
+
+class TaskForm extends React.Component<
+TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
+  constructor(props: TaskFormProps & RouteComponentProps<{ id: string }>) {
+    super(props);
     this.state = {
       title: '',
       deadline: '',
@@ -53,23 +75,23 @@ class TaskForm extends Component {
     }
   }
 
-  onTitleChange = (e) => {
+  onTitleChange = (e: OnChangeEventType) => {
     this.setState({ title: e.target.value });
   }
 
-  onDeadlineChange = (e) => {
+  onDeadlineChange = (e: OnChangeEventType) => {
     this.setState({ deadline: e.target.value });
   }
 
-  onDescChange = (e) => {
-    this.setState({ desc: e.target.value });
+  onDescChange = (e: OnChangeTextAreaEventType, data: TextAreaProps) => {
+    this.setState({ desc: data.value });
   }
 
-  onTagChange = (e) => {
+  onTagChange = (e: OnChangeEventType) => {
     this.setState({ tag: e.target.value });
   }
 
-  onSubmit = (e) => {
+  onSubmit = (e: OnClickEventType) => {
     e.preventDefault();
     const {
       type, title, deadline, desc, tag,
@@ -79,7 +101,7 @@ class TaskForm extends Component {
     } = this.props;
 
     const created = new Date(Date.now());
-    const data = {
+    const data: TodoObjectType = {
       title,
       created: formatDate(created),
       deadline,
@@ -95,7 +117,7 @@ class TaskForm extends Component {
       updateTodo(data);
     }
 
-    updateNav('/');
+    updateNav({ title: '/' });
     this.setState({ redirect: true });
   }
 
@@ -115,7 +137,6 @@ class TaskForm extends Component {
     }
     return (
       <>
-        <NavBar {...this.props} />
         <Container>
           <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
             <Grid.Column textAlign="left" style={{ maxWidth: 450 }}>
@@ -144,15 +165,12 @@ class TaskForm extends Component {
   }
 }
 
-const matchStateToProps = (state) => {
-  return {
-  };
-};
-
-const matchDispatchToProps = (dispatch) => ({
-  createTodo: (info) => dispatch(createTodo(info)),
-  updateTodo: (info) => dispatch(updateTodo(info)),
-  updateNav: (payload) => dispatch(updateNav(payload)),
+const matchDispatchToProps = (dispatch: Function) => ({
+  createTodo: (info: TodoObjectType) => dispatch(createTodo(info)),
+  updateTodo: (info: TodoObjectType) => dispatch(updateTodo(info)),
+  updateNav: ({
+    title, loading,
+  }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
 });
 
-export default connect(matchStateToProps, matchDispatchToProps)(TaskForm);
+export default connect(null, matchDispatchToProps)(TaskForm);

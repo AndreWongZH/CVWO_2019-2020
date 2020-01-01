@@ -1,13 +1,21 @@
-import React from 'react';
+import * as React from 'react';
 import {
   Header, Table, Icon, Button,
 } from 'semantic-ui-react';
 
 import { capitalize, styleDate } from '../../../Functions';
 
+import { TodoObjectType, OnClickEventType } from '../../TypeDeclarations';
+
 import LabelCell from './LabelCell';
 
-const TableRow = ({ data, handleDelete, handleEdit }) => {
+type TableRowProps = {
+  data: TodoObjectType[],
+  handleDelete: (e: OnClickEventType) => void,
+  handleEdit: (e: OnClickEventType) => void,
+}
+
+const TableRow = ({ data, handleDelete, handleEdit }: TableRowProps) => {
   const tablerows = data.map((todo) => (
     <Table.Row key={todo.id}>
       <Table.Cell>
@@ -15,7 +23,7 @@ const TableRow = ({ data, handleDelete, handleEdit }) => {
       </Table.Cell>
       <Table.Cell singleLine>{ styleDate(todo.created) }</Table.Cell>
       <Table.Cell singleLine>{ styleDate(todo.deadline) }</Table.Cell>
-      <Table.Cell>{ capitalize(todo.desc) }</Table.Cell>
+      <Table.Cell>{ capitalize(todo.desc as string) }</Table.Cell>
       <Table.Cell>
         <LabelCell data={todo.tag} />
       </Table.Cell>
@@ -31,7 +39,12 @@ const TableRow = ({ data, handleDelete, handleEdit }) => {
       </Table.Cell>
     </Table.Row>
   ));
-  return tablerows;
+
+  return (
+    <>
+      {tablerows}
+    </>
+  );
 };
 
 export default TableRow;
