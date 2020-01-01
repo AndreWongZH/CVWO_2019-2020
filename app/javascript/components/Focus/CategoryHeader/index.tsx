@@ -1,9 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 import { Segment, Header, Icon } from 'semantic-ui-react';
+import { SemanticICONS } from 'semantic-ui-react/dist/commonjs/generic';
+
+type CategoryHeaderProps = {
+  type: string,
+  hide: (category: string) => void,
+  iconName: SemanticICONS,
+  headingName: string,
+  focusCategory: Boolean
+}
 
 const CategoryHeader = ({
   type, hide, iconName, headingName, focusCategory,
-}) => (
+}: CategoryHeaderProps) => (
   <Segment.Inline>
     <Header as="h3" floated="left">
       <Icon name={iconName} />

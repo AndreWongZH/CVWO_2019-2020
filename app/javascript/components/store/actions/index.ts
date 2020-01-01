@@ -20,9 +20,11 @@ import {
   DELETE_TODO_SUCCESS,
 } from '../constants';
 
+import { TodoObject, UpdateTableValues, ReduxState, UpdateCategoryData } from '../../TypeDeclarations';
+
 
 // Action used to toggle focus category visiblity
-export const updateCategory = (data) => {
+export const updateCategory = (data: UpdateCategoryData) => {
   return { type: UPDATE_CATEGORY, payload: data };
 };
 
@@ -32,7 +34,7 @@ export const loadFocusBegin = () => {
   return { type: LOAD_FOCUS_BEGIN };
 };
 
-export const loadFocusSuccess = (data) => {
+export const loadFocusSuccess = (data: ReduxState["focus"]) => {
   return { type: LOAD_FOCUS_SUCCESS, payload: data };
 };
 
@@ -41,15 +43,15 @@ export const loadFocusFail = () => {
 };
 
 export const loadFocus = () => {
-  return (dispatch) => {
+  return (dispatch: Function) => {
     dispatch(loadFocusBegin());
     axios
       .get('/todos/focus')
       .then((res) => {
         dispatch(loadFocusSuccess(res.data));
       })
-      .catch((err) => {
-        dispatch(loadFocusFail(err.message));
+      .catch(() => {
+        dispatch(loadFocusFail());
       });
   };
 };
@@ -62,8 +64,8 @@ export const wipeMessage = () => {
 
 
 // Action to update navigation active
-export const updateNav = (title) => {
-  return { type: UPDATE_NAV, payload: title };
+export const updateNav = ({ title, loading }: { title: string, loading?: Boolean }) => {
+  return { type: UPDATE_NAV, payload: {title, loading} };
 };
 
 
@@ -72,7 +74,7 @@ export const loadDataBegin = () => {
   return { type: LOAD_DATA_BEGIN };
 };
 
-export const loadDataSuccess = (data) => {
+export const loadDataSuccess = (data: ReduxState["todos"]) => {
   return { type: LOAD_DATA_SUCCESS, payload: data };
 };
 
@@ -81,7 +83,7 @@ export const loadDataFail = () => {
 };
 
 export const loadData = () => {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     dispatch(loadDataBegin());
     const link = `/todos/?sort=${getState().sort.heading}&ascend=${getState().sort.direction}&search=${getState().sort.search}`;
     axios
@@ -89,24 +91,24 @@ export const loadData = () => {
       .then((res) => {
         dispatch(loadDataSuccess(res.data));
       })
-      .catch((err) => {
-        dispatch(loadDataFail(err.message));
+      .catch(() => {
+        dispatch(loadDataFail());
       });
   };
 };
 
 
 // Actions used to update search and sort query
-export const updateSearch = (searchValue) => {
+export const updateSearch = (searchValue: UpdateTableValues) => {
   return { type: UPDATE_SEARCH, payload: searchValue };
 };
 
-export const updateSort = (sortValues) => {
+export const updateSort = (sortValues: UpdateTableValues) => {
   return { type: UPDATE_SORT, payload: sortValues };
 };
 
-export const updateTable = (values) => {
-  return (dispatch) => {
+export const updateTable = (values: UpdateTableValues) => {
+  return (dispatch: Function) => {
     if (values.search === undefined) {
       dispatch(updateSort(values));
     } else {
@@ -128,8 +130,8 @@ export const createTodoFail = () => {
 
 export const createTodo = ({
   title, created, deadline, desc, done, tag,
-}) => {
-  return (dispatch) => {
+}: TodoObject) => {
+  return (dispatch: Function) => {
     axios
       .post('/todos', {
         title,
@@ -160,8 +162,8 @@ export const updateTodoFail = () => {
 
 export const updateTodo = ({
   id, title, created, deadline, desc, done, tag,
-}) => {
-  return (dispatch) => {
+}: TodoObject) => {
+  return (dispatch: Function) => {
     axios
       .put(`/todos/${id}`, {
         title,
@@ -190,8 +192,8 @@ export const deleteTodoFail = () => {
   return { type: DELETE_TODO_FAIL };
 };
 
-export const deleteTodo = (id) => {
-  return (dispatch) => {
+export const deleteTodo = (id: string) => {
+  return (dispatch: Function) => {
     axios
       .delete(`/todos/${id}`)
       .then(() => {

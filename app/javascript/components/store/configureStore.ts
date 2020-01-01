@@ -22,7 +22,7 @@ import {
 } from './constants';
 
 const initialState = {
-  todos: [],
+  todos: Array,
   loading: true,
   navRoute: '/',
   message: '',
@@ -32,10 +32,10 @@ const initialState = {
     search: '',
   },
   focus: {
-    today: [],
-    tmr: [],
-    past: [],
-    impt: [],
+    today: Array,
+    tmr: Array,
+    past: Array,
+    impt: Array,
   },
   focusCategory: {
     today: true,
@@ -45,7 +45,7 @@ const initialState = {
   },
 };
 
-function rootReducer(state = initialState, action) {
+function rootReducer(state = initialState, action: { type: string, payload?: any }) {
   console.log(action.type);
   switch (action.type) {
     case UPDATE_CATEGORY:
@@ -115,7 +115,8 @@ function rootReducer(state = initialState, action) {
     case UPDATE_NAV:
       return {
         ...state,
-        navRoute: action.payload,
+        navRoute: action.payload.title,
+        loading: action.payload.loading ? action.payload.loading : state.loading
       };
     case LOAD_DATA_BEGIN:
       return {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import {
   Header, Table, Segment, Dimmer, Loader, Message, Container,
 } from 'semantic-ui-react';
@@ -11,12 +11,26 @@ import {
 } from '../store/actions';
 
 import TableRow from './TableRow';
-import NavBar from '../NavBar';
+import { ReduxState, UpdateTableValues, OnClickEvent } from '../TypeDeclarations';
+import { DeleteTodo, LoadData, WipeMessage, UpdateNav, UpdateTable } from '../store/actions/ActionDeclaration';
+
+type TodoTableProps = {
+  loadData: LoadData,
+  wipeMessage: WipeMessage,
+  deleteTodo: DeleteTodo,
+  updateNav: UpdateNav,
+  updateTable: UpdateTable,
+}
+
+type TodoTableState = {
+  id: string,
+  redirect: Boolean
+}
 
 
-class TodoTable extends Component {
-  constructor() {
-    super();
+class TodoTable extends React.Component<TodoTableProps & ReduxState, TodoTableState>{
+  constructor(props: TodoTableProps & ReduxState) {
+    super(props);
     this.state = {
       id: '',
       redirect: false,
@@ -28,13 +42,13 @@ class TodoTable extends Component {
     await loadData();
   }
 
-  handleMessage = (e) => {
+  handleMessage = (e: OnClickEvent) => {
     const { wipeMessage } = this.props;
     e.preventDefault();
     wipeMessage();
   }
 
-  handleDelete = async (e) => {
+  handleDelete = async (e: OnClickEvent) => {
     const { deleteTodo, loadData } = this.props;
     e.preventDefault();
     const { id } = e.currentTarget;
@@ -43,17 +57,17 @@ class TodoTable extends Component {
     await loadData();
   }
 
-  handleEdit = (e) => {
+  handleEdit = (e: OnClickEvent) => {
     const { updateNav } = this.props;
     e.preventDefault();
     const { id } = e.currentTarget;
 
     this.setState({ id });
-    updateNav('/add');
+    updateNav({ title: '/edit'});
     this.setState({ redirect: true });
   }
 
-  handleSort = (clickedColumn) => () => {
+  handleSort = (clickedColumn: string) => () => {
     const { updateTable, sort } = this.props;
 
     if (sort.heading !== clickedColumn) {
@@ -76,7 +90,7 @@ class TodoTable extends Component {
     const { redirect, id } = this.state;
 
     const flashMessage = message === ''
-      ? (<div />)
+      ? (<div></div>)
       : (
         <Message
           onDismiss={this.handleMessage}
@@ -97,7 +111,6 @@ class TodoTable extends Component {
     }
     return (
       <>
-        <NavBar {...this.props}/>
         <Container>
           {flashMessage}
           {redirect && <Redirect to={`/edit/${id}`} />}
@@ -153,7 +166,7 @@ class TodoTable extends Component {
   }
 }
 
-const matchStateToProps = (state) => {
+const matchStateToProps = (state: ReduxState) => {
   return {
     todos: state.todos,
     loading: state.loading,
@@ -162,12 +175,12 @@ const matchStateToProps = (state) => {
   };
 };
 
-const matchDispatchToProps = (dispatch) => ({
-  loadData: (payload) => dispatch(loadData(payload)),
+const matchDispatchToProps = (dispatch: Function ) => ({
+  loadData: () => dispatch(loadData()),
   wipeMessage: () => dispatch(wipeMessage()),
-  deleteTodo: (id) => dispatch(deleteTodo(id)),
-  updateNav: (payload) => dispatch(updateNav(payload)),
-  updateTable: (values) => dispatch(updateTable(values)),
+  deleteTodo: (id: string) => dispatch(deleteTodo(id)),
+  updateNav: ({ title, loading }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
+  updateTable: (values: UpdateTableValues) => dispatch(updateTable(values)),
 });
 
 export default connect(matchStateToProps, matchDispatchToProps)(TodoTable);
