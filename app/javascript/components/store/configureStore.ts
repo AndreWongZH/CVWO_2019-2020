@@ -116,7 +116,7 @@ function rootReducer(state = initialState, action: { type: string, payload?: any
       return {
         ...state,
         navRoute: action.payload.title,
-        loading: action.payload.loading ? action.payload.loading : state.loading
+        loading: action.payload.loading ? action.payload.loading : state.loading,
       };
     case LOAD_DATA_BEGIN:
       return {

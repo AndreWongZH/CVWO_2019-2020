@@ -1,8 +1,10 @@
 import * as React from 'react';
 
-import { Form, Segment, Button, TextAreaProps } from 'semantic-ui-react';
+import {
+  Form, Segment, Button, TextAreaProps,
+} from 'semantic-ui-react';
 
-import  { OnChangeEvent, OnChangeTextAreaEvent, OnClickEvent } from '../../TypeDeclarations'
+import { OnChangeEventType, OnChangeTextAreaEventType, OnClickEventType } from '../../TypeDeclarations';
 
 type FormInputProps = {
   title: string,
@@ -10,11 +12,11 @@ type FormInputProps = {
   desc: string | number,
   tag: string,
   type: string,
-  onTitleChange: (e: OnChangeEvent) => void,
-  onDeadlineChange: (e: OnChangeEvent) => void,
-  onDescChange: (e: OnChangeTextAreaEvent, data: TextAreaProps) => void,
-  onTagChange: (e: OnChangeEvent) => void,
-  onSubmit: (e: OnClickEvent) => void,
+  onTitleChange: (e: OnChangeEventType) => void,
+  onDeadlineChange: (e: OnChangeEventType) => void,
+  onDescChange: (e: OnChangeTextAreaEventType, data: TextAreaProps) => void,
+  onTagChange: (e: OnChangeEventType) => void,
+  onSubmit: (e: OnClickEventType) => void,
 }
 
 const FormInput = ({

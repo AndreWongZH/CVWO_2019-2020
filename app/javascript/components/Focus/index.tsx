@@ -8,15 +8,15 @@ import { loadFocus, updateCategory } from '../store/actions';
 
 import ItemSegment from './ItemSegment';
 import CategoryHeader from './CategoryHeader';
-import { ReduxState, UpdateCategoryData } from '../TypeDeclarations';
-import { LoadFocus, UpdateCategory } from '../store/actions/ActionDeclaration';
+import { ReduxStateType, UpdateCategoryDataType } from '../TypeDeclarations';
+import { LoadFocusType, UpdateCategoryType } from '../store/actions/ActionDeclaration';
 
 type FocusProps = {
-  loadFocus: LoadFocus,
-  updateCategory: UpdateCategory
+  loadFocus: LoadFocusType,
+  updateCategory: UpdateCategoryType
 }
 
-class Focus extends React.Component<FocusProps & ReduxState> {
+class Focus extends React.Component<FocusProps & ReduxStateType> {
   async componentDidMount() {
     const { loadFocus } = this.props;
     await loadFocus();
@@ -24,7 +24,7 @@ class Focus extends React.Component<FocusProps & ReduxState> {
 
   hide = (category: string) => () => {
     const { updateCategory, focusCategory } = this.props;
-    const data: UpdateCategoryData = {};
+    const data: UpdateCategoryDataType = {};
 
     if (category === 'today') {
       data.today = !focusCategory.today;
@@ -120,7 +120,7 @@ class Focus extends React.Component<FocusProps & ReduxState> {
   }
 }
 
-const matchStateToProps = (state: ReduxState) => {
+const matchStateToProps = (state: ReduxStateType) => {
   return {
     loading: state.loading,
     focus: state.focus,
@@ -130,7 +130,7 @@ const matchStateToProps = (state: ReduxState) => {
 
 const matchDispatchToProps = (dispatch: Function) => ({
   loadFocus: () => dispatch(loadFocus()),
-  updateCategory: (category: UpdateCategoryData) => dispatch(updateCategory(category)),
+  updateCategory: (category: UpdateCategoryDataType) => dispatch(updateCategory(category)),
 });
 
 

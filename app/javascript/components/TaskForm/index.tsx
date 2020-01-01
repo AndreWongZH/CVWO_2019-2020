@@ -14,13 +14,15 @@ import FormInput from './FormInput';
 
 import { formatDate } from '../../Functions';
 
-import { OnChangeEvent, ReduxState, TodoObject, OnChangeTextAreaEvent, OnClickEvent } from '../TypeDeclarations'
-import { CreateTodo, UpdateNav, UpdateTodo } from '../store/actions/ActionDeclaration';
+import {
+  OnChangeEventType, TodoObjectType, OnChangeTextAreaEventType, OnClickEventType,
+} from '../TypeDeclarations';
+import { CreateTodoType, UpdateNavType, UpdateTodoType } from '../store/actions/ActionDeclaration';
 
 type TaskFormProps = {
-  createTodo: CreateTodo,
-  updateNav: UpdateNav,
-  updateTodo: UpdateTodo,
+  createTodo: CreateTodoType,
+  updateNav: UpdateNavType,
+  updateTodo: UpdateTodoType,
 }
 
 type TaskFormState = {
@@ -34,7 +36,8 @@ type TaskFormState = {
 }
 
 
-class TaskForm extends React.Component<TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
+class TaskForm extends React.Component<
+TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
   constructor(props: TaskFormProps & RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
@@ -72,23 +75,23 @@ class TaskForm extends React.Component<TaskFormProps & RouteComponentProps<{ id:
     }
   }
 
-  onTitleChange = (e: OnChangeEvent) => {
+  onTitleChange = (e: OnChangeEventType) => {
     this.setState({ title: e.target.value });
   }
 
-  onDeadlineChange = (e: OnChangeEvent) => {
+  onDeadlineChange = (e: OnChangeEventType) => {
     this.setState({ deadline: e.target.value });
   }
 
-  onDescChange = (e: OnChangeTextAreaEvent, data: TextAreaProps) => {
+  onDescChange = (e: OnChangeTextAreaEventType, data: TextAreaProps) => {
     this.setState({ desc: data.value });
   }
 
-  onTagChange = (e: OnChangeEvent) => {
+  onTagChange = (e: OnChangeEventType) => {
     this.setState({ tag: e.target.value });
   }
 
-  onSubmit = (e: OnClickEvent) => {
+  onSubmit = (e: OnClickEventType) => {
     e.preventDefault();
     const {
       type, title, deadline, desc, tag,
@@ -98,7 +101,7 @@ class TaskForm extends React.Component<TaskFormProps & RouteComponentProps<{ id:
     } = this.props;
 
     const created = new Date(Date.now());
-    const data: TodoObject = {
+    const data: TodoObjectType = {
       title,
       created: formatDate(created),
       deadline,
@@ -162,15 +165,12 @@ class TaskForm extends React.Component<TaskFormProps & RouteComponentProps<{ id:
   }
 }
 
-const matchStateToProps = (state: ReduxState) => {
-  return {
-  };
-};
-
 const matchDispatchToProps = (dispatch: Function) => ({
-  createTodo: (info: TodoObject) => dispatch(createTodo(info)),
-  updateTodo: (info: TodoObject) => dispatch(updateTodo(info)),
-  updateNav: ({ title, loading }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
+  createTodo: (info: TodoObjectType) => dispatch(createTodo(info)),
+  updateTodo: (info: TodoObjectType) => dispatch(updateTodo(info)),
+  updateNav: ({
+    title, loading,
+  }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
 });
 
-export default connect(matchStateToProps, matchDispatchToProps)(TaskForm);
+export default connect(null, matchDispatchToProps)(TaskForm);

@@ -8,7 +8,7 @@ import configureStore from '../store/configureStore';
 import TodoTable from '../TodoTable';
 import TaskForm from '../TaskForm';
 import Focus from '../Focus';
-import NavBar from '../NavBar'
+import NavBar from '../NavBar';
 
 const store = configureStore();
 
@@ -17,10 +17,10 @@ const App = () => (
     <BrowserRouter>
       <NavBar />
       <Switch>
-        <Route exact path="/" component={ TodoTable } />
-        <Route path="/add" component={ TaskForm } />
-        <Route path="/edit/:id" component={ TaskForm } />
-        <Route path="/focus" component={ Focus } />
+        <Route exact path="/" component={TodoTable} />
+        <Route path="/add" component={TaskForm} />
+        <Route path="/edit/:id" component={TaskForm} />
+        <Route path="/focus" component={Focus} />
       </Switch>
     </BrowserRouter>
   </Provider>

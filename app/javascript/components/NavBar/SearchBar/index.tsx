@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Menu, Input, Button } from 'semantic-ui-react';
 
-import { OnChangeEvent } from '../../TypeDeclarations'
+import { OnChangeEventType } from '../../TypeDeclarations';
 
 type SearchBarProps = {
-  handleSearchChange: (e: OnChangeEvent) => void,
+  handleSearchChange: (e: OnChangeEventType) => void,
   handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void,
   handleReset: () => void,
   search: string

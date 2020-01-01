@@ -5,16 +5,14 @@ import {
 
 import { capitalize, styleDate } from '../../../Functions';
 
-import { TodoObject } from '../../TypeDeclarations'
+import { TodoObjectType, OnClickEventType } from '../../TypeDeclarations';
 
 import LabelCell from './LabelCell';
 
-import { OnClickEvent } from '../../TypeDeclarations'
-
 type TableRowProps = {
-  data: TodoObject[],
-  handleDelete: (e: OnClickEvent) => void,
-  handleEdit: (e: OnClickEvent) => void,
+  data: TodoObjectType[],
+  handleDelete: (e: OnClickEventType) => void,
+  handleEdit: (e: OnClickEventType) => void,
 }
 
 const TableRow = ({ data, handleDelete, handleEdit }: TableRowProps) => {
@@ -43,9 +41,9 @@ const TableRow = ({ data, handleDelete, handleEdit }: TableRowProps) => {
   ));
 
   return (
-    <React.Fragment>
+    <>
       {tablerows}
-    </React.Fragment>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
-import * as React from 'react';
+// import * as React from 'react';
 
-export type TodoObject = {
+export type TodoObjectType = {
     id?: string,
     title: string,
     created: string,
@@ -10,8 +10,8 @@ export type TodoObject = {
     tag: string
 }
 
-export type ReduxState = {
-    todos: TodoObject[],
+export type ReduxStateType = {
+    todos: TodoObjectType[],
     loading: Boolean,
     navRoute: string,
     message: string,
@@ -21,10 +21,10 @@ export type ReduxState = {
       search: string,
     },
     focus: {
-      today: TodoObject[],
-      tmr: TodoObject[],
-      past: TodoObject[],
-      impt: TodoObject[],
+      today: TodoObjectType[],
+      tmr: TodoObjectType[],
+      past: TodoObjectType[],
+      impt: TodoObjectType[],
     },
     focusCategory: {
       today: Boolean,
@@ -35,19 +35,19 @@ export type ReduxState = {
 }
 
 // for event props
-export type OnChangeEvent = React.ChangeEvent<HTMLInputElement>
+export type OnChangeEventType = React.ChangeEvent<HTMLInputElement>
 
-export type OnChangeTextAreaEvent = React.FormEvent<HTMLTextAreaElement>
+export type OnChangeTextAreaEventType = React.FormEvent<HTMLTextAreaElement>
 
-export type OnClickEvent = React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+export type OnClickEventType = React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
 
-export type UpdateTableValues = {
+export type UpdateTableValuesType = {
   heading?: string,
   direction?: string,
   search?: string,
 }
 
-export type UpdateCategoryData = {
+export type UpdateCategoryDataType = {
   today?: Boolean,
   past?: Boolean,
   tmr?: Boolean,

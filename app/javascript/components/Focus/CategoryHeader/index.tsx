@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Segment, Header, Icon } from 'semantic-ui-react';
+
+// SemanticICONS is excluded from no-unused-vars rule
 import { SemanticICONS } from 'semantic-ui-react/dist/commonjs/generic';
 
 type CategoryHeaderProps = {

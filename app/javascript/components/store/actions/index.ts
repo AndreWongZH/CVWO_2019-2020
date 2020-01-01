@@ -20,11 +20,13 @@ import {
   DELETE_TODO_SUCCESS,
 } from '../constants';
 
-import { TodoObject, UpdateTableValues, ReduxState, UpdateCategoryData } from '../../TypeDeclarations';
+import {
+  TodoObjectType, UpdateTableValuesType, ReduxStateType, UpdateCategoryDataType,
+} from '../../TypeDeclarations';
 
 
 // Action used to toggle focus category visiblity
-export const updateCategory = (data: UpdateCategoryData) => {
+export const updateCategory = (data: UpdateCategoryDataType) => {
   return { type: UPDATE_CATEGORY, payload: data };
 };
 
@@ -34,7 +36,7 @@ export const loadFocusBegin = () => {
   return { type: LOAD_FOCUS_BEGIN };
 };
 
-export const loadFocusSuccess = (data: ReduxState["focus"]) => {
+export const loadFocusSuccess = (data: ReduxStateType['focus']) => {
   return { type: LOAD_FOCUS_SUCCESS, payload: data };
 };
 
@@ -65,7 +67,7 @@ export const wipeMessage = () => {
 
 // Action to update navigation active
 export const updateNav = ({ title, loading }: { title: string, loading?: Boolean }) => {
-  return { type: UPDATE_NAV, payload: {title, loading} };
+  return { type: UPDATE_NAV, payload: { title, loading } };
 };
 
 
@@ -74,7 +76,7 @@ export const loadDataBegin = () => {
   return { type: LOAD_DATA_BEGIN };
 };
 
-export const loadDataSuccess = (data: ReduxState["todos"]) => {
+export const loadDataSuccess = (data: ReduxStateType['todos']) => {
   return { type: LOAD_DATA_SUCCESS, payload: data };
 };
 
@@ -99,15 +101,15 @@ export const loadData = () => {
 
 
 // Actions used to update search and sort query
-export const updateSearch = (searchValue: UpdateTableValues) => {
+export const updateSearch = (searchValue: UpdateTableValuesType) => {
   return { type: UPDATE_SEARCH, payload: searchValue };
 };
 
-export const updateSort = (sortValues: UpdateTableValues) => {
+export const updateSort = (sortValues: UpdateTableValuesType) => {
   return { type: UPDATE_SORT, payload: sortValues };
 };
 
-export const updateTable = (values: UpdateTableValues) => {
+export const updateTable = (values: UpdateTableValuesType) => {
   return (dispatch: Function) => {
     if (values.search === undefined) {
       dispatch(updateSort(values));
@@ -130,7 +132,7 @@ export const createTodoFail = () => {
 
 export const createTodo = ({
   title, created, deadline, desc, done, tag,
-}: TodoObject) => {
+}: TodoObjectType) => {
   return (dispatch: Function) => {
     axios
       .post('/todos', {
@@ -162,7 +164,7 @@ export const updateTodoFail = () => {
 
 export const updateTodo = ({
   id, title, created, deadline, desc, done, tag,
-}: TodoObject) => {
+}: TodoObjectType) => {
   return (dispatch: Function) => {
     axios
       .put(`/todos/${id}`, {

@@ -1,20 +1,20 @@
-import { TodoObject, UpdateTableValues, UpdateCategoryData } from "../../TypeDeclarations"
+import { TodoObjectType, UpdateTableValuesType, UpdateCategoryDataType } from '../../TypeDeclarations';
 
-export type DeleteTodo = (id: string) => (dispatch: Function) => void
+export type DeleteTodoType = (id: string) => (dispatch: Function) => void
 
-export type UpdateTodo = ({
+export type UpdateTodoType = ({
   id, title, created, deadline, desc, done, tag,
-}: TodoObject) => (dispatch: Function) => void
+}: TodoObjectType) => (dispatch: Function) => void
 
-export type CreateTodo = ({
+export type CreateTodoType = ({
   id, title, created, deadline, desc, done, tag,
-}: TodoObject) => (dispatch: Function) => void
+}: TodoObjectType) => (dispatch: Function) => void
 
-export type UpdateTable = (values: UpdateTableValues) => (dispatch: Function) => void
+export type UpdateTableType = (values: UpdateTableValuesType) => (dispatch: Function) => void
 
-export type LoadData = () => (dispatch: Function, getState: Function) => void
+export type LoadDataType = () => (dispatch: Function, getState: Function) => void
 
-export type UpdateNav = ({ title, loading }: { title: string, loading?: Boolean }) => {
+export type UpdateNavType = ({ title, loading }: { title: string, loading?: Boolean }) => {
   type: string;
   payload: {
     title: string;
@@ -22,13 +22,13 @@ export type UpdateNav = ({ title, loading }: { title: string, loading?: Boolean 
   };
 }
 
-export type WipeMessage = () => {
+export type WipeMessageType = () => {
   type: string
 }
 
-export type LoadFocus = () => (dispatch: Function) => void
+export type LoadFocusType = () => (dispatch: Function) => void
 
-export type UpdateCategory = (data: UpdateCategoryData) => {
+export type UpdateCategoryType = (data: UpdateCategoryDataType) => {
   type: string;
-  payload: UpdateCategoryData;
+  payload: UpdateCategoryDataType;
 }

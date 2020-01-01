@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Item } from 'semantic-ui-react';
 
 import LabelCell from '../../../TodoTable/TableRow/LabelCell';
-import { TodoObject } from '../../../TypeDeclarations';
+import { TodoObjectType } from '../../../TypeDeclarations';
 
-const EachItem = ({ data }: { data: TodoObject[]}) => {
-  const ItemCombined = data.map((todo: TodoObject) => (
+const EachItem = ({ data }: { data: TodoObjectType[]}) => {
+  const ItemCombined = data.map((todo: TodoObjectType) => (
     <Item key={todo.id}>
       <Item.Content>
         <Item.Header>{ todo.title }</Item.Header>
@@ -24,9 +24,9 @@ const EachItem = ({ data }: { data: TodoObject[]}) => {
   ));
 
   return (
-    <React.Fragment>
+    <>
       {ItemCombined}
-    </React.Fragment>
+    </>
   );
 };
 

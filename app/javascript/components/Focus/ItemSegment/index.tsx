@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Item } from 'semantic-ui-react';
 
 import EachItem from './EachItem';
-import { TodoObject } from '../../TypeDeclarations';
+import { TodoObjectType } from '../../TypeDeclarations';
 
-const ItemSegment = ({ data, visible }: { data: TodoObject[], visible: Boolean}) => {
+const ItemSegment = ({ data, visible }: { data: TodoObjectType[], visible: Boolean}) => {
   if (visible) {
     return (
       <Item.Group divided>
