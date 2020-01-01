@@ -9,7 +9,7 @@ import { OnChangeEventType, OnChangeTextAreaEventType, OnClickEventType } from '
 type FormInputProps = {
   title: string,
   deadline: string,
-  desc: string | number,
+  describe: string | number,
   tag: string,
   type: string,
   onTitleChange: (e: OnChangeEventType) => void,
@@ -22,7 +22,7 @@ type FormInputProps = {
 const FormInput = ({
   title,
   deadline,
-  desc,
+  describe,
   tag,
   type,
   onTitleChange,
@@ -63,7 +63,7 @@ const FormInput = ({
           <Form.TextArea
             placeholder="Enter description..."
             style={{ minHeight: 140 }}
-            defaultValue={desc}
+            defaultValue={describe}
             onChange={onDescChange}
           />
         </Form.Field>

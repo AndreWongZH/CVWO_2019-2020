@@ -15,7 +15,7 @@ const EachItem = ({ data }: { data: TodoObjectType[]}) => {
             {todo.created}
           </span>
         </Item.Meta>
-        <Item.Description>{todo.desc}</Item.Description>
+        <Item.Description>{todo.describe}</Item.Description>
         <Item.Extra>
           <LabelCell data={todo.tag} />
         </Item.Extra>

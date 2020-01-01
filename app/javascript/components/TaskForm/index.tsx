@@ -28,7 +28,7 @@ type TaskFormProps = {
 type TaskFormState = {
   title: string,
   deadline: string,
-  desc: string | number,
+  describe: string | number,
   tag: string,
   redirect: Boolean,
   type: string,
@@ -43,7 +43,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
     this.state = {
       title: '',
       deadline: '',
-      desc: '',
+      describe: '',
       tag: '',
       redirect: false,
       type: '',
@@ -62,7 +62,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
           this.setState({
             title: res.data.title,
             deadline: res.data.deadline,
-            desc: res.data.desc,
+            describe: res.data.describe,
             tag: res.data.tag,
           });
         })
@@ -84,7 +84,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
   }
 
   onDescChange = (e: OnChangeTextAreaEventType, data: TextAreaProps) => {
-    this.setState({ desc: data.value });
+    this.setState({ describe: data.value });
   }
 
   onTagChange = (e: OnChangeEventType) => {
@@ -94,7 +94,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
   onSubmit = (e: OnClickEventType) => {
     e.preventDefault();
     const {
-      type, title, deadline, desc, tag,
+      type, title, deadline, describe, tag,
     } = this.state;
     const {
       createTodo, updateNav, updateTodo, match,
@@ -105,7 +105,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
       title,
       created: formatDate(created),
       deadline,
-      desc,
+      describe,
       done: false,
       tag,
     };
@@ -123,7 +123,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
 
   render() {
     const {
-      loading, redirect, type, title, deadline, desc, tag,
+      loading, redirect, type, title, deadline, describe, tag,
     } = this.state;
 
     if (loading) {
@@ -153,7 +153,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
                 type={type}
                 title={title}
                 deadline={deadline}
-                desc={desc}
+                describe={describe}
                 tag={tag}
               />
             </Grid.Column>

@@ -3,11 +3,11 @@ import { TodoObjectType, UpdateTableValuesType, UpdateCategoryDataType } from '.
 export type DeleteTodoType = (id: string) => (dispatch: Function) => void
 
 export type UpdateTodoType = ({
-  id, title, created, deadline, desc, done, tag,
+  id, title, created, deadline, describe, done, tag,
 }: TodoObjectType) => (dispatch: Function) => void
 
 export type CreateTodoType = ({
-  id, title, created, deadline, desc, done, tag,
+  id, title, created, deadline, describe, done, tag,
 }: TodoObjectType) => (dispatch: Function) => void
 
 export type UpdateTableType = (values: UpdateTableValuesType) => (dispatch: Function) => void

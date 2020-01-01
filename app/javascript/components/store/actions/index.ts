@@ -131,7 +131,7 @@ export const createTodoFail = () => {
 };
 
 export const createTodo = ({
-  title, created, deadline, desc, done, tag,
+  title, created, deadline, describe, done, tag,
 }: TodoObjectType) => {
   return (dispatch: Function) => {
     axios
@@ -139,12 +139,13 @@ export const createTodo = ({
         title,
         created,
         deadline,
-        desc,
+        describe,
         done,
         tag,
       })
       .then(() => {
         dispatch(createTodoSuccess());
+        dispatch(loadData());
       })
       .catch(() => {
         dispatch(createTodoFail());
@@ -163,7 +164,7 @@ export const updateTodoFail = () => {
 };
 
 export const updateTodo = ({
-  id, title, created, deadline, desc, done, tag,
+  id, title, created, deadline, describe, done, tag,
 }: TodoObjectType) => {
   return (dispatch: Function) => {
     axios
@@ -171,12 +172,13 @@ export const updateTodo = ({
         title,
         created,
         deadline,
-        desc,
+        describe,
         done,
         tag,
       })
       .then(() => {
         dispatch(updateTodoSuccess());
+        dispatch(loadData());
       })
       .catch(() => {
         dispatch(updateTodoFail());
