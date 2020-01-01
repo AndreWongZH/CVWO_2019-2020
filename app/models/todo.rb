@@ -8,7 +8,7 @@ class Todo < ApplicationRecord
     end
 
     def self.apply_search(search)
-        return Todo.where("title LIKE ? OR desc LIKE ?", "%#{search}%", "%#{search}%")
+        return Todo.where("title LIKE ? OR describe LIKE ?", "%#{search}%", "%#{search}%")
     end
 
     def self.search_past()
