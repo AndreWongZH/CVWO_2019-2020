@@ -25,7 +25,7 @@ const TableRow = ({ data, handleDelete, handleEdit }: TableRowProps) => {
       </Table.Cell>
       <Table.Cell singleLine>{ styleDate(todo.created) }</Table.Cell>
       <Table.Cell singleLine>{ styleDate(todo.deadline) }</Table.Cell>
-      <Table.Cell>{ capitalize(todo.desc) }</Table.Cell>
+      <Table.Cell>{ capitalize(todo.desc as string) }</Table.Cell>
       <Table.Cell>
         <LabelCell data={todo.tag} />
       </Table.Cell>
