@@ -4,7 +4,7 @@ class CreateTodos < ActiveRecord::Migration[6.0]
       t.string :title
       t.date :created
       t.date :deadline
-      t.text :desc
+      t.text :describe
       t.boolean :done
       t.string :tag
 
