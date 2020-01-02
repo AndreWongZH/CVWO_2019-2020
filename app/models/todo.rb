@@ -27,5 +27,8 @@ class Todo < ApplicationRecord
         return Todo.where("tag LIKE ?", "%important%")
     end
 
-
+    def self.get_tags()
+        return Todo.select("tag")
+    end
+    
 end

@@ -52,6 +52,14 @@ class TodosController < ApplicationController
 		json_response(@data)
 	end
 
+	# GET /todos/tags
+
+	def tags
+		@tags = Todo.get_tags()
+
+		json_response(@tags)
+	end
+
 	private
 	
 	def todo_params
