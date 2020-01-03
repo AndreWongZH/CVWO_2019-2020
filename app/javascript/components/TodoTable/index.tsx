@@ -7,14 +7,17 @@ import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import {
-  loadData, wipeMessage, deleteTodo, updateNav, updateTable,
+  loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
 } from '../store/actions';
 
 import TableRow from './TableRow';
+import DropdownTag from './DropdownTag';
+
 import { ReduxStateType, UpdateTableValuesType, OnClickEventType } from '../TypeDeclarations';
 import {
   DeleteTodoType, LoadDataType, WipeMessageType, UpdateNavType, UpdateTableType,
 } from '../store/actions/ActionDeclaration';
+
 
 type TodoTableProps = {
   loadData: LoadDataType,
@@ -22,6 +25,7 @@ type TodoTableProps = {
   deleteTodo: DeleteTodoType,
   updateNav: UpdateNavType,
   updateTable: UpdateTableType,
+  loadTags: () => void
 }
 
 type TodoTableState = {
@@ -40,8 +44,9 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
   }
 
   async componentDidMount() {
-    const { loadData } = this.props;
+    const { loadData, loadTags } = this.props;
     await loadData();
+    loadTags();
   }
 
   handleMessage = (e: OnClickEventType) => {
@@ -85,9 +90,17 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     }
   }
 
+  handleTag = (e) => {
+    const { updateTable } = this.props;
+
+    updateTable({
+      tag: e.currentTarget.textContent,
+    });
+  }
+
   render() {
     const {
-      todos, loading, message, sort,
+      todos, loading, message, sort, tags,
     } = this.props;
     const { redirect, id } = this.state;
 
@@ -116,6 +129,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
         <Container>
           {flashMessage}
           {redirect && <Redirect to={`/edit/${id}`} />}
+          <DropdownTag data={tags} handleTag={this.handleTag} />
           <Segment raised>
             <Table padded sortable selectable>
               <Table.Header>
@@ -142,8 +156,8 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
                   </Table.HeaderCell>
 
                   <Table.HeaderCell
-                    sorted={sort.heading === 'desc' ? sort.direction : null}
-                    onClick={this.handleSort('desc')}
+                    sorted={sort.heading === 'describe' ? sort.direction : null}
+                    onClick={this.handleSort('describe')}
                   >
                       Description
                   </Table.HeaderCell>
@@ -174,6 +188,7 @@ const matchStateToProps = (state: ReduxStateType) => {
     loading: state.loading,
     message: state.message,
     sort: state.sort,
+    tags: state.tags,
   };
 };
 
@@ -185,6 +200,7 @@ const matchDispatchToProps = (dispatch: Function) => ({
     title, loading,
   }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
   updateTable: (values: UpdateTableValuesType) => dispatch(updateTable(values)),
+  loadTags: () => dispatch(loadTags()),
 });
 
 export default connect(matchStateToProps, matchDispatchToProps)(TodoTable);
