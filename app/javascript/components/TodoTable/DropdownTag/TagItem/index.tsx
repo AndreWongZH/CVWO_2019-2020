@@ -11,7 +11,17 @@ const TagItem = ({ data, handleTag }) => {
     </Dropdown.Item>
   ));
 
-  return EachItem;
+  return (
+    <>
+      <Dropdown.Item
+        key="reset"
+        icon="repeat"
+        text="Reset Tags"
+        onClick={handleTag}
+      />
+      {EachItem}
+    </>
+  );
 };
 
 export default TagItem;
