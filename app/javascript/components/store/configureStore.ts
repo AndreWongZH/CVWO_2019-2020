@@ -10,6 +10,7 @@ import {
   LOAD_FOCUS_FAIL,
   UPDATE_SEARCH,
   UPDATE_SORT,
+  UPDATE_TAG,
   WIPE_MESSAGE,
   UPDATE_NAV,
   LOAD_DATA_BEGIN,
@@ -30,10 +31,12 @@ const initialState = {
   loading: true,
   navRoute: '/',
   message: '',
+  // for query parameters
   sort: {
     heading: 'deadline',
     direction: 'ascending',
     search: '',
+    tag: '',
   },
   focus: {
     today: Array,
@@ -120,6 +123,15 @@ function rootReducer(state = initialState, action: { type: string, payload?: any
           ...state.sort,
           heading: action.payload.heading,
           direction: action.payload.direction,
+        },
+      };
+    case UPDATE_TAG:
+      return {
+        ...state,
+        loading: true,
+        sort: {
+          ...state.sort,
+          tag: action.payload.tag,
         },
       };
     case WIPE_MESSAGE:

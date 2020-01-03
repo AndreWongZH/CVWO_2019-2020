@@ -9,6 +9,7 @@ import {
   LOAD_FOCUS_FAIL,
   UPDATE_SEARCH,
   UPDATE_SORT,
+  UPDATE_TAG,
   WIPE_MESSAGE,
   UPDATE_NAV,
   LOAD_DATA_BEGIN,
@@ -28,7 +29,6 @@ import {
 
 
 // Actions used to load tags
-
 export const loadTagsSuccess = (data) => {
   return { type: LOAD_TAGS_SUCCESS, payload: data };
 };
@@ -112,7 +112,7 @@ export const loadDataFail = () => {
 export const loadData = () => {
   return (dispatch: Function, getState: Function) => {
     dispatch(loadDataBegin());
-    const link = `/todos/?sort=${getState().sort.heading}&ascend=${getState().sort.direction}&search=${getState().sort.search}`;
+    const link = `/todos/?sort=${getState().sort.heading}&ascend=${getState().sort.direction}&search=${getState().sort.search}&tag=${getState().sort.tag}`;
     axios
       .get(link)
       .then((res) => {
@@ -134,12 +134,18 @@ export const updateSort = (sortValues: UpdateTableValuesType) => {
   return { type: UPDATE_SORT, payload: sortValues };
 };
 
+export const updateTag = (tagValue: UpdateTableValuesType) => {
+  return { type: UPDATE_TAG, payload: tagValue };
+};
+
 export const updateTable = (values: UpdateTableValuesType) => {
   return (dispatch: Function) => {
-    if (values.search === undefined) {
-      dispatch(updateSort(values));
-    } else {
+    if (typeof values.search !== 'undefined') {
       dispatch(updateSearch(values));
+    } else if (typeof values.tag !== 'undefined') {
+      dispatch(updateTag(values));
+    } else {
+      dispatch(updateSort(values));
     }
     dispatch(loadData());
   };
