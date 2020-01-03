@@ -2,6 +2,8 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import {
+  LOAD_TAGS_SUCCESS,
+  LOAD_TAGS_FAIL,
   UPDATE_CATEGORY,
   LOAD_FOCUS_BEGIN,
   LOAD_FOCUS_SUCCESS,
@@ -20,6 +22,8 @@ import {
   DELETE_TODO_FAIL,
   DELETE_TODO_SUCCESS,
 } from './constants';
+
+import { modifyTagsJsonInput } from './middleware';
 
 const initialState = {
   todos: Array,
@@ -43,11 +47,22 @@ const initialState = {
     past: true,
     impt: true,
   },
+  tags: [],
 };
 
 function rootReducer(state = initialState, action: { type: string, payload?: any }) {
   console.log(action.type);
   switch (action.type) {
+    case LOAD_TAGS_SUCCESS:
+      return {
+        ...state,
+        tags: action.payload,
+      };
+    case LOAD_TAGS_FAIL:
+      return {
+        ...state,
+        message: 'Failed to load tags',
+      };
     case UPDATE_CATEGORY:
       return {
         ...state,
@@ -171,6 +186,6 @@ function rootReducer(state = initialState, action: { type: string, payload?: any
 }
 
 export default function configureStore() {
-  const store = createStore(rootReducer, applyMiddleware(thunk));
+  const store = createStore(rootReducer, applyMiddleware(modifyTagsJsonInput, thunk));
   return store;
 }

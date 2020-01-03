@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 import {
+  LOAD_TAGS_SUCCESS,
+  LOAD_TAGS_FAIL,
   UPDATE_CATEGORY,
   LOAD_FOCUS_BEGIN,
   LOAD_FOCUS_SUCCESS,
@@ -24,6 +26,29 @@ import {
   TodoObjectType, UpdateTableValuesType, ReduxStateType, UpdateCategoryDataType,
 } from '../../TypeDeclarations';
 
+
+// Actions used to load tags
+
+export const loadTagsSuccess = (data) => {
+  return { type: LOAD_TAGS_SUCCESS, payload: data };
+};
+
+export const loadTagsFail = () => {
+  return { type: LOAD_TAGS_FAIL };
+};
+
+export const loadTags = () => {
+  return (dispatch: Function) => {
+    axios
+      .get('/todos/tags')
+      .then((res) => {
+        dispatch(loadTagsSuccess(res.data));
+      })
+      .catch(() => {
+        dispatch(loadTagsFail());
+      });
+  };
+};
 
 // Action used to toggle focus category visiblity
 export const updateCategory = (data: UpdateCategoryDataType) => {

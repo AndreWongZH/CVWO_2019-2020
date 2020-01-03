@@ -1,3 +1,7 @@
+export const LOAD_TAGS_SUCCESS = 'LOAD_TAGS_SUCCESS';
+
+export const LOAD_TAGS_FAIL = 'LOAD_TAGS_FAIL';
+
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 
 export const LOAD_FOCUS_BEGIN = 'LOAD_FOCUS_BEGIN';
