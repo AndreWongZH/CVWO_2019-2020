@@ -143,6 +143,9 @@ export const updateTable = (values: UpdateTableValuesType) => {
     if (typeof values.search !== 'undefined') {
       dispatch(updateSearch(values));
     } else if (typeof values.tag !== 'undefined') {
+      if (values.tag === 'Reset Tags') {
+        values.tag = '';
+      }
       dispatch(updateTag(values));
     } else {
       dispatch(updateSort(values));
