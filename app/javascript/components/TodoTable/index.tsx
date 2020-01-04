@@ -15,7 +15,7 @@ import DropdownTag from './DropdownTag';
 
 import { ReduxStateType, UpdateTableValuesType, OnClickEventType } from '../TypeDeclarations';
 import {
-  DeleteTodoType, LoadDataType, WipeMessageType, UpdateNavType, UpdateTableType,
+  DeleteTodoType, LoadDataType, WipeMessageType, UpdateNavType, UpdateTableType, LoadTagsType,
 } from '../store/actions/ActionDeclaration';
 
 
@@ -25,7 +25,7 @@ type TodoTableProps = {
   deleteTodo: DeleteTodoType,
   updateNav: UpdateNavType,
   updateTable: UpdateTableType,
-  loadTags: () => void
+  loadTags: LoadTagsType,
 }
 
 type TodoTableState = {
@@ -43,9 +43,9 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { loadData, loadTags } = this.props;
-    await loadData();
+    loadData();
     loadTags();
   }
 
@@ -55,13 +55,13 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     wipeMessage();
   }
 
-  handleDelete = async (e: OnClickEventType) => {
+  handleDelete = (e: OnClickEventType) => {
     const { deleteTodo, loadData } = this.props;
     e.preventDefault();
     const { id } = e.currentTarget;
 
-    await deleteTodo(id);
-    await loadData();
+    deleteTodo(id);
+    loadData();
   }
 
   handleEdit = (e: OnClickEventType) => {
@@ -90,7 +90,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     }
   }
 
-  handleTag = (e) => {
+  handleTag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { updateTable } = this.props;
 
     updateTable({
@@ -100,7 +100,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
 
   render() {
     const {
-      todos, loading, message, sort, tags,
+      todos, loading, message, sort, tags, tagsLoading,
     } = this.props;
     const { redirect, id } = this.state;
 
@@ -115,7 +115,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
         </Message>
       );
 
-    if (loading) {
+    if (loading || tagsLoading) {
       return (
         <div>
           <Dimmer inverted active>
@@ -129,7 +129,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
         <Container>
           {flashMessage}
           {redirect && <Redirect to={`/edit/${id}`} />}
-          <DropdownTag data={tags} handleTag={this.handleTag} />
+          <DropdownTag tagList={tags} handleTag={this.handleTag} />
           <Segment raised>
             <Table padded sortable selectable>
               <Table.Header>
@@ -186,6 +186,7 @@ const matchStateToProps = (state: ReduxStateType) => {
   return {
     todos: state.todos,
     loading: state.loading,
+    tagsLoading: state.tagsLoading,
     message: state.message,
     sort: state.sort,
     tags: state.tags,

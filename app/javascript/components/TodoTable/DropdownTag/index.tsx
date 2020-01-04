@@ -1,9 +1,16 @@
 import * as React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
+import { ReduxStateType, OnTagSelectType } from '../../TypeDeclarations';
+
 import TagItem from './TagItem';
 
-const DropdownTag = ({ data, handleTag }) => {
+type DropdownTagType = {
+  tagList: ReduxStateType['tags'],
+  handleTag: OnTagSelectType
+}
+
+const DropdownTag = ({ tagList, handleTag }: DropdownTagType) => {
   return (
     <Dropdown
       text="Filter"
@@ -16,7 +23,7 @@ const DropdownTag = ({ data, handleTag }) => {
       <Dropdown.Menu>
         <Dropdown.Header icon="tags" content="Filter by tag" />
         <Dropdown.Divider />
-        <TagItem data={data} handleTag={handleTag} />
+        <TagItem tagList={tagList} handleTag={handleTag} />
       </Dropdown.Menu>
     </Dropdown>
   );
