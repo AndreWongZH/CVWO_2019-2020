@@ -1,3 +1,5 @@
+import { DropdownItemProps } from 'semantic-ui-react';
+
 // import * as React from 'react';
 
 export type TodoObjectType = {
@@ -11,27 +13,30 @@ export type TodoObjectType = {
 }
 
 export type ReduxStateType = {
-    todos: TodoObjectType[],
-    loading: Boolean,
-    navRoute: string,
-    message: string,
-    sort: {
-      heading: string,
-      direction: 'ascending' | 'descending',
-      search: string,
-    },
-    focus: {
-      today: TodoObjectType[],
-      tmr: TodoObjectType[],
-      past: TodoObjectType[],
-      impt: TodoObjectType[],
-    },
-    focusCategory: {
-      today: Boolean,
-      tmr: Boolean,
-      past: Boolean,
-      impt: Boolean,
-    },
+  todos: TodoObjectType[],
+  loading: Boolean,
+  tagsLoading: Boolean,
+  navRoute: string,
+  message: string,
+  sort: {
+    heading: string,
+    direction: 'ascending' | 'descending',
+    search: string,
+    tag: string
+  },
+  focus: {
+    today: TodoObjectType[],
+    tmr: TodoObjectType[],
+    past: TodoObjectType[],
+    impt: TodoObjectType[],
+  },
+  focusCategory: {
+    today: Boolean,
+    tmr: Boolean,
+    past: Boolean,
+    impt: Boolean,
+  },
+  tags: { text: string, value: string }[],
 }
 
 // for event props
@@ -41,10 +46,15 @@ export type OnChangeTextAreaEventType = React.FormEvent<HTMLTextAreaElement>
 
 export type OnClickEventType = React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
 
+export type OnTagSelectType = (
+  e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: DropdownItemProps
+) => void
+
 export type UpdateTableValuesType = {
   heading?: string,
   direction?: string,
   search?: string,
+  tag?: string
 }
 
 export type UpdateCategoryDataType = {
