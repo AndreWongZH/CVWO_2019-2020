@@ -67,7 +67,7 @@ function rootReducer(state = initialState, action: { type: string, payload?: any
       return {
         ...state,
         tagsLoading: false,
-        tags: action.payload,
+        tags: action.payload.tagList,
       };
     case LOAD_TAGS_FAIL:
       return {

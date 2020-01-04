@@ -34,7 +34,10 @@ export const loadTagsBegin = () => {
   return { type: LOAD_TAGS_BEGIN };
 };
 
-export const loadTagsSuccess = (data: ReduxStateType['tags']) => {
+export const loadTagsSuccess = (data: {
+  tagJson: { tag: string }[],
+  tagList: { text: string, value: string }[]
+}) => {
   return { type: LOAD_TAGS_SUCCESS, payload: data };
 };
 
@@ -48,7 +51,10 @@ export const loadTags = () => {
     axios
       .get('/todos/tags')
       .then((res) => {
-        dispatch(loadTagsSuccess(res.data));
+        dispatch(loadTagsSuccess({
+          tagJson: res.data,
+          tagList: [],
+        }));
       })
       .catch(() => {
         dispatch(loadTagsFail());

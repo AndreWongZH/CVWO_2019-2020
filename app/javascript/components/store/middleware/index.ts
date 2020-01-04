@@ -4,7 +4,12 @@ import { LOAD_TAGS_SUCCESS } from '../constants';
 
 
 export const modifyTagsJsonInput = () => (next: Function) => (action
-  : { type: string, payload: { tag: string }[] }) => {
+  : { type: string,
+      payload: {
+        tagJson: { tag: string }[],
+        tagList: { text: string, value: string }[]
+      }
+    }) => {
   if (action.type === LOAD_TAGS_SUCCESS) {
     const tagsArray: { text: string, value: string }[] = [];
 
@@ -27,9 +32,9 @@ export const modifyTagsJsonInput = () => (next: Function) => (action
       tagsObj.tag.split(',').forEach((tag) => addTags(tag));
     };
 
-    action.payload.forEach((tagsObj: { tag: string }) => applyTags(tagsObj));
+    action.payload.tagJson.forEach((tagsObj: { tag: string }) => applyTags(tagsObj));
 
-    action.payload = tagsArray;
+    action.payload.tagList = tagsArray;
 
     return next(action);
   }

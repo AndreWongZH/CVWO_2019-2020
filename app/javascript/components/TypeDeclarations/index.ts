@@ -50,6 +50,7 @@ export type OnTagSelectType = (
   e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: DropdownItemProps
 ) => void
 
+// for argument types in redux actions
 export type UpdateTableValuesType = {
   heading?: string,
   direction?: string,
