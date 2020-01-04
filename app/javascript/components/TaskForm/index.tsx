@@ -8,31 +8,39 @@ import axios from 'axios';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { createTodo, updateNav, updateTodo } from '../store/actions';
+import {
+  createTodo, updateNav, updateTodo, loadTags, loadTagsFail,
+} from '../store/actions';
 
 import FormInput from './FormInput';
 
 import { formatDate } from '../../Functions';
 
 import {
-  OnChangeEventType, TodoObjectType, OnChangeTextAreaEventType, OnClickEventType,
+  OnChangeEventType, TodoObjectType, OnChangeTextAreaEventType, OnClickEventType, ReduxStateType,
 } from '../TypeDeclarations';
-import { CreateTodoType, UpdateNavType, UpdateTodoType } from '../store/actions/ActionDeclaration';
+import {
+  CreateTodoType, UpdateNavType, UpdateTodoType, LoadTagsType,
+} from '../store/actions/ActionDeclaration';
 
 type TaskFormProps = {
   createTodo: CreateTodoType,
   updateNav: UpdateNavType,
   updateTodo: UpdateTodoType,
+  loadTags: LoadTagsType,
+  loadTagsFail: LoadTagsType,
+  tagsLoading: Boolean
+  tags: { text: string, value: string }[]
 }
 
 type TaskFormState = {
   title: string,
   deadline: string,
   describe: string | number,
-  tag: string,
   redirect: Boolean,
   type: string,
   loading: Boolean,
+  currentTags: string[],
 }
 
 
@@ -44,15 +52,17 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
       title: '',
       deadline: '',
       describe: '',
-      tag: '',
       redirect: false,
       type: '',
       loading: true,
+      currentTags: [],
     };
   }
 
   async componentDidMount() {
-    const { match } = this.props;
+    const { match, loadTags, loadTagsFail } = this.props;
+    loadTags();
+
     if (match.params.id) {
       this.setState({ type: 'update' });
       const { id } = match.params;
@@ -63,16 +73,16 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
             title: res.data.title,
             deadline: res.data.deadline,
             describe: res.data.describe,
-            tag: res.data.tag,
+            currentTags: res.data.tag.split(','),
           });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          loadTagsFail();
         });
-      this.setState({ loading: false });
     } else {
-      this.setState({ type: 'add', loading: false });
+      this.setState({ type: 'add' });
     }
+    this.setState({ loading: false });
   }
 
   onTitleChange = (e: OnChangeEventType) => {
@@ -87,14 +97,14 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
     this.setState({ describe: data.value });
   }
 
-  onTagChange = (e: OnChangeEventType) => {
-    this.setState({ tag: e.target.value });
+  onTagChange = (e: OnChangeEventType, { value }: { value: string[] }) => {
+    this.setState({ currentTags: value });
   }
 
   onSubmit = (e: OnClickEventType) => {
     e.preventDefault();
     const {
-      type, title, deadline, describe, tag,
+      type, title, deadline, describe, currentTags,
     } = this.state;
     const {
       createTodo, updateNav, updateTodo, match,
@@ -107,7 +117,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
       deadline,
       describe,
       done: false,
-      tag,
+      tag: currentTags.join(),
     };
 
     if (type === 'add') {
@@ -123,10 +133,12 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
 
   render() {
     const {
-      loading, redirect, type, title, deadline, describe, tag,
+      loading, redirect, type, title, deadline, describe, currentTags,
     } = this.state;
 
-    if (loading) {
+    const { tagsLoading, tags } = this.props;
+
+    if (tagsLoading || loading) {
       return (
         <div>
           <Dimmer inverted active>
@@ -154,7 +166,8 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
                 title={title}
                 deadline={deadline}
                 describe={describe}
-                tag={tag}
+                tagList={tags}
+                currentTags={currentTags}
               />
             </Grid.Column>
             {redirect && <Redirect to="/" />}
@@ -165,12 +178,21 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
   }
 }
 
+const matchStateToProps = (state: ReduxStateType) => {
+  return {
+    tagsLoading: state.tagsLoading,
+    tags: state.tags,
+  };
+};
+
 const matchDispatchToProps = (dispatch: Function) => ({
   createTodo: (info: TodoObjectType) => dispatch(createTodo(info)),
   updateTodo: (info: TodoObjectType) => dispatch(updateTodo(info)),
   updateNav: ({
     title, loading,
   }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
+  loadTags: () => dispatch(loadTags()),
+  loadTagsFail: () => dispatch(loadTagsFail()),
 });
 
-export default connect(null, matchDispatchToProps)(TaskForm);
+export default connect(matchStateToProps, matchDispatchToProps)(TaskForm);

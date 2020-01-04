@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   get '/todos/focus', to: 'todos#focus'
 
+  get '/todos/tags', to: 'todos#tags'
+
   resources :todos
 
   root 'static#index'

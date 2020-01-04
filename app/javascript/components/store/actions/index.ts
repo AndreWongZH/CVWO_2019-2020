@@ -1,12 +1,16 @@
 import axios from 'axios';
 
 import {
+  LOAD_TAGS_BEGIN,
+  LOAD_TAGS_SUCCESS,
+  LOAD_TAGS_FAIL,
   UPDATE_CATEGORY,
   LOAD_FOCUS_BEGIN,
   LOAD_FOCUS_SUCCESS,
   LOAD_FOCUS_FAIL,
   UPDATE_SEARCH,
   UPDATE_SORT,
+  UPDATE_TAG,
   WIPE_MESSAGE,
   UPDATE_NAV,
   LOAD_DATA_BEGIN,
@@ -24,6 +28,39 @@ import {
   TodoObjectType, UpdateTableValuesType, ReduxStateType, UpdateCategoryDataType,
 } from '../../TypeDeclarations';
 
+
+// Actions used to load tags
+export const loadTagsBegin = () => {
+  return { type: LOAD_TAGS_BEGIN };
+};
+
+export const loadTagsSuccess = (data: {
+  tagJson: { tag: string }[],
+  tagList: { text: string, value: string }[]
+}) => {
+  return { type: LOAD_TAGS_SUCCESS, payload: data };
+};
+
+export const loadTagsFail = () => {
+  return { type: LOAD_TAGS_FAIL };
+};
+
+export const loadTags = () => {
+  return (dispatch: Function) => {
+    dispatch(loadTagsBegin());
+    axios
+      .get('/todos/tags')
+      .then((res) => {
+        dispatch(loadTagsSuccess({
+          tagJson: res.data,
+          tagList: [],
+        }));
+      })
+      .catch(() => {
+        dispatch(loadTagsFail());
+      });
+  };
+};
 
 // Action used to toggle focus category visiblity
 export const updateCategory = (data: UpdateCategoryDataType) => {
@@ -87,7 +124,7 @@ export const loadDataFail = () => {
 export const loadData = () => {
   return (dispatch: Function, getState: Function) => {
     dispatch(loadDataBegin());
-    const link = `/todos/?sort=${getState().sort.heading}&ascend=${getState().sort.direction}&search=${getState().sort.search}`;
+    const link = `/todos/?sort=${getState().sort.heading}&ascend=${getState().sort.direction}&search=${getState().sort.search}&tag=${getState().sort.tag}`;
     axios
       .get(link)
       .then((res) => {
@@ -109,12 +146,21 @@ export const updateSort = (sortValues: UpdateTableValuesType) => {
   return { type: UPDATE_SORT, payload: sortValues };
 };
 
+export const updateTag = (tagValue: UpdateTableValuesType) => {
+  return { type: UPDATE_TAG, payload: tagValue };
+};
+
 export const updateTable = (values: UpdateTableValuesType) => {
   return (dispatch: Function) => {
-    if (values.search === undefined) {
-      dispatch(updateSort(values));
-    } else {
+    if (typeof values.search !== 'undefined') {
       dispatch(updateSearch(values));
+    } else if (typeof values.tag !== 'undefined') {
+      if (values.tag === 'Reset Tags') {
+        values.tag = '';
+      }
+      dispatch(updateTag(values));
+    } else {
+      dispatch(updateSort(values));
     }
     dispatch(loadData());
   };

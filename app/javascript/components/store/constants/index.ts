@@ -1,3 +1,9 @@
+export const LOAD_TAGS_BEGIN = 'LOAD_TAGS_BEGIN';
+
+export const LOAD_TAGS_SUCCESS = 'LOAD_TAGS_SUCCESS';
+
+export const LOAD_TAGS_FAIL = 'LOAD_TAGS_FAIL';
+
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 
 export const LOAD_FOCUS_BEGIN = 'LOAD_FOCUS_BEGIN';
@@ -9,6 +15,8 @@ export const LOAD_FOCUS_FAIL = 'LOAD_FOCUS_FAIL';
 export const UPDATE_SEARCH = 'UPDATE_SEARCH';
 
 export const UPDATE_SORT = 'UPDATE_SORT';
+
+export const UPDATE_TAG = 'UPDATE_TAG';
 
 export const WIPE_MESSAGE = 'WIPE_MESSAGE';
 

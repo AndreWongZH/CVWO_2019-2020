@@ -11,6 +11,14 @@ class Todo < ApplicationRecord
         return Todo.where("title LIKE ? OR describe LIKE ?", "%#{search}%", "%#{search}%")
     end
 
+    def self.apply_tag(tag)
+        if (tag == '')
+            return Todo
+        else
+            return Todo.where("tag LIKE ?", "%#{tag}%")
+        end
+    end
+
     def self.search_past()
         return Todo.where(deadline: DateTime.yesterday..DateTime::Infinity.new)
     end
@@ -27,5 +35,8 @@ class Todo < ApplicationRecord
         return Todo.where("tag LIKE ?", "%important%")
     end
 
-
+    def self.get_tags()
+        return Todo.select("tag")
+    end
+    
 end

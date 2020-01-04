@@ -8,7 +8,9 @@ class TodosController < ApplicationController
 
 		@search = params[:search]
 
-		@todos = Todo.apply_sort(@sort, @ascend).apply_search(@search)
+		@tag = params[:tag]
+
+		@todos = Todo.apply_tag(@tag).apply_sort(@sort, @ascend).apply_search(@search)
 		json_response(@todos)
 	end
 
@@ -50,6 +52,14 @@ class TodosController < ApplicationController
 		}
 
 		json_response(@data)
+	end
+
+	# GET /todos/tags
+
+	def tags
+		@tags = Todo.get_tags()
+
+		json_response(@tags)
 	end
 
 	private

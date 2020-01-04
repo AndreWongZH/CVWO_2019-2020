@@ -4,18 +4,21 @@ import {
   Form, Segment, Button, TextAreaProps,
 } from 'semantic-ui-react';
 
+import TagInput from './TagInput';
+
 import { OnChangeEventType, OnChangeTextAreaEventType, OnClickEventType } from '../../TypeDeclarations';
 
 type FormInputProps = {
   title: string,
   deadline: string,
   describe: string | number,
-  tag: string,
   type: string,
+  tagList: { text: string, value: string }[],
+  currentTags: string[],
   onTitleChange: (e: OnChangeEventType) => void,
   onDeadlineChange: (e: OnChangeEventType) => void,
   onDescChange: (e: OnChangeTextAreaEventType, data: TextAreaProps) => void,
-  onTagChange: (e: OnChangeEventType) => void,
+  onTagChange: (e: OnChangeEventType, { value }: { value: string[] }) => void,
   onSubmit: (e: OnClickEventType) => void,
 }
 
@@ -23,13 +26,14 @@ const FormInput = ({
   title,
   deadline,
   describe,
-  tag,
   type,
   onTitleChange,
   onDeadlineChange,
   onDescChange,
   onTagChange,
   onSubmit,
+  tagList,
+  currentTags,
 }: FormInputProps) => {
   const FormTotal = (
     <Form size="large">
@@ -70,13 +74,10 @@ const FormInput = ({
 
         <Form.Field>
           <label>Tags</label>
-          <Form.Input
-            fluid
-            icon="paperclip"
-            iconPosition="left"
-            placeholder="tags"
-            defaultValue={tag}
-            onChange={onTagChange}
+          <TagInput
+            tagList={tagList}
+            currentTags={currentTags}
+            onTagChange={onTagChange}
           />
         </Form.Field>
 

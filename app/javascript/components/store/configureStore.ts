@@ -2,12 +2,16 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import {
+  LOAD_TAGS_BEGIN,
+  LOAD_TAGS_SUCCESS,
+  LOAD_TAGS_FAIL,
   UPDATE_CATEGORY,
   LOAD_FOCUS_BEGIN,
   LOAD_FOCUS_SUCCESS,
   LOAD_FOCUS_FAIL,
   UPDATE_SEARCH,
   UPDATE_SORT,
+  UPDATE_TAG,
   WIPE_MESSAGE,
   UPDATE_NAV,
   LOAD_DATA_BEGIN,
@@ -21,15 +25,20 @@ import {
   DELETE_TODO_SUCCESS,
 } from './constants';
 
+import { modifyTagsJsonInput } from './middleware';
+
 const initialState = {
   todos: Array,
   loading: true,
+  tagsLoading: true,
   navRoute: '/',
   message: '',
+  // for query parameters
   sort: {
     heading: 'deadline',
     direction: 'ascending',
     search: '',
+    tag: '',
   },
   focus: {
     today: Array,
@@ -43,11 +52,29 @@ const initialState = {
     past: true,
     impt: true,
   },
+  tags: [],
 };
 
 function rootReducer(state = initialState, action: { type: string, payload?: any }) {
   console.log(action.type);
   switch (action.type) {
+    case LOAD_TAGS_BEGIN:
+      return {
+        ...state,
+        tagsLoading: true,
+      };
+    case LOAD_TAGS_SUCCESS:
+      return {
+        ...state,
+        tagsLoading: false,
+        tags: action.payload.tagList,
+      };
+    case LOAD_TAGS_FAIL:
+      return {
+        ...state,
+        tagsLoading: false,
+        message: 'Failed to load tags',
+      };
     case UPDATE_CATEGORY:
       return {
         ...state,
@@ -105,6 +132,15 @@ function rootReducer(state = initialState, action: { type: string, payload?: any
           ...state.sort,
           heading: action.payload.heading,
           direction: action.payload.direction,
+        },
+      };
+    case UPDATE_TAG:
+      return {
+        ...state,
+        loading: true,
+        sort: {
+          ...state.sort,
+          tag: action.payload.tag,
         },
       };
     case WIPE_MESSAGE:
@@ -171,6 +207,6 @@ function rootReducer(state = initialState, action: { type: string, payload?: any
 }
 
 export default function configureStore() {
-  const store = createStore(rootReducer, applyMiddleware(thunk));
+  const store = createStore(rootReducer, applyMiddleware(modifyTagsJsonInput, thunk));
   return store;
 }
