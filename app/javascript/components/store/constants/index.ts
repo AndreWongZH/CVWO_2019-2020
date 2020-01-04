@@ -1,3 +1,5 @@
+export const LOAD_TAGS_BEGIN = 'LOAD_TAGS_BEGIN';
+
 export const LOAD_TAGS_SUCCESS = 'LOAD_TAGS_SUCCESS';
 
 export const LOAD_TAGS_FAIL = 'LOAD_TAGS_FAIL';

@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import {
+  LOAD_TAGS_BEGIN,
   LOAD_TAGS_SUCCESS,
   LOAD_TAGS_FAIL,
   UPDATE_CATEGORY,
@@ -29,6 +30,7 @@ import { modifyTagsJsonInput } from './middleware';
 const initialState = {
   todos: Array,
   loading: true,
+  tagsLoading: true,
   navRoute: '/',
   message: '',
   // for query parameters
@@ -56,14 +58,21 @@ const initialState = {
 function rootReducer(state = initialState, action: { type: string, payload?: any }) {
   console.log(action.type);
   switch (action.type) {
+    case LOAD_TAGS_BEGIN:
+      return {
+        ...state,
+        tagsLoading: true,
+      };
     case LOAD_TAGS_SUCCESS:
       return {
         ...state,
+        tagsLoading: false,
         tags: action.payload,
       };
     case LOAD_TAGS_FAIL:
       return {
         ...state,
+        tagsLoading: false,
         message: 'Failed to load tags',
       };
     case UPDATE_CATEGORY:

@@ -1,5 +1,7 @@
 import { TodoObjectType, UpdateTableValuesType, UpdateCategoryDataType } from '../../TypeDeclarations';
 
+export type LoadTagsType = () => (dispatch: Function) => void
+
 export type DeleteTodoType = (id: string) => (dispatch: Function) => void
 
 export type UpdateTodoType = ({

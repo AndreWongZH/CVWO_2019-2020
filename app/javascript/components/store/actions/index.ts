@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {
+  LOAD_TAGS_BEGIN,
   LOAD_TAGS_SUCCESS,
   LOAD_TAGS_FAIL,
   UPDATE_CATEGORY,
@@ -29,7 +30,11 @@ import {
 
 
 // Actions used to load tags
-export const loadTagsSuccess = (data) => {
+export const loadTagsBegin = () => {
+  return { type: LOAD_TAGS_BEGIN };
+};
+
+export const loadTagsSuccess = (data: ReduxStateType['tags']) => {
   return { type: LOAD_TAGS_SUCCESS, payload: data };
 };
 
@@ -39,6 +44,7 @@ export const loadTagsFail = () => {
 
 export const loadTags = () => {
   return (dispatch: Function) => {
+    dispatch(loadTagsBegin());
     axios
       .get('/todos/tags')
       .then((res) => {
