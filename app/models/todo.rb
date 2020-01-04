@@ -20,7 +20,7 @@ class Todo < ApplicationRecord
     end
 
     def self.search_past()
-        return Todo.where(deadline: DateTime.yesterday..DateTime::Infinity.new)
+        return Todo.where("deadline < ?", Date.today.prev_day)
     end
 
     def self.search_today()
