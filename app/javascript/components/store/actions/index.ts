@@ -192,6 +192,7 @@ export const createTodo = ({
       .then(() => {
         dispatch(createTodoSuccess());
         dispatch(loadData());
+        dispatch(loadTags());
       })
       .catch(() => {
         dispatch(createTodoFail());
@@ -225,6 +226,7 @@ export const updateTodo = ({
       .then(() => {
         dispatch(updateTodoSuccess());
         dispatch(loadData());
+        dispatch(loadTags());
       })
       .catch(() => {
         dispatch(updateTodoFail());
@@ -248,6 +250,8 @@ export const deleteTodo = (id: string) => {
       .delete(`/todos/${id}`)
       .then(() => {
         dispatch(deleteTodoSuccess());
+        dispatch(loadData());
+        dispatch(loadTags());
       })
       .catch(() => {
         dispatch(deleteTodoFail());
