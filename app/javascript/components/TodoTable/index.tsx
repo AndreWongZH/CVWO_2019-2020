@@ -26,6 +26,12 @@ const ApplyMagin = styled.div`
   margin-top: 1em;
 `;
 
+const StyledMessage = styled(Message)`
+  &&& {
+    margin-top: 1em;
+  }
+`;
+
 type TodoTableProps = {
   loadData: LoadDataType,
   wipeMessage: WipeMessageType,
@@ -113,12 +119,12 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     const flashMessage = message === ''
       ? (<div />)
       : (
-        <Message
+        <StyledMessage
           onDismiss={this.handleMessage}
           onClose={this.handleMessage}
         >
           <Header>{message}</Header>
-        </Message>
+        </StyledMessage>
       );
 
     if (loading || tagsLoading) {

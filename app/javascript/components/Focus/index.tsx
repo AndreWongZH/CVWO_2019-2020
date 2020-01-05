@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Grid, Header, Icon, Segment, Dimmer, Loader,
+  Grid, Header, Icon, Dimmer, Loader,
 } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
