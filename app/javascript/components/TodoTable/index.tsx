@@ -56,12 +56,11 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
   }
 
   handleDelete = (e: OnClickEventType) => {
-    const { deleteTodo, loadData } = this.props;
+    const { deleteTodo } = this.props;
     e.preventDefault();
     const { id } = e.currentTarget;
 
     deleteTodo(id);
-    loadData();
   }
 
   handleEdit = (e: OnClickEventType) => {

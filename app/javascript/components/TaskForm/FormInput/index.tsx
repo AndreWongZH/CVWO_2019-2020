@@ -15,6 +15,7 @@ type FormInputProps = {
   type: string,
   tagList: { text: string, value: string }[],
   currentTags: string[],
+  missingTitle: Boolean,
   onTitleChange: (e: OnChangeEventType) => void,
   onDeadlineChange: (e: OnChangeEventType) => void,
   onDescChange: (e: OnChangeTextAreaEventType, data: TextAreaProps) => void,
@@ -34,6 +35,7 @@ const FormInput = ({
   onSubmit,
   tagList,
   currentTags,
+  missingTitle,
 }: FormInputProps) => {
   const FormTotal = (
     <Form size="large">
@@ -41,6 +43,7 @@ const FormInput = ({
         <Form.Field>
           <label>Title</label>
           <Form.Input
+            error={missingTitle ? { content: 'Please enter title', pointing: 'below' } : false}
             fluid
             icon="pencil alternate"
             iconPosition="left"

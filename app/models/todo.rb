@@ -1,4 +1,6 @@
 class Todo < ApplicationRecord
+    validates :title, presence: true
+
     def self.apply_sort(sort_by, ascend)
         if (ascend == 'ascending')
             return Todo.order(sort_by)
@@ -20,7 +22,7 @@ class Todo < ApplicationRecord
     end
 
     def self.search_past()
-        return Todo.where(deadline: DateTime.yesterday..DateTime::Infinity.new)
+        return Todo.where("deadline < ?", Date.today.prev_day)
     end
 
     def self.search_today()

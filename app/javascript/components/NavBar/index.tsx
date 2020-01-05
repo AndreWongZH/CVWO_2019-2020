@@ -88,7 +88,7 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
   }
 
   render() {
-    const { navRoute } = this.props;
+    const { navRoute, location } = this.props;
     const { redirect, search } = this.state;
 
     return (
@@ -107,6 +107,7 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
             content="Add new task"
             active={navRoute === '/add'}
             onClick={this.handleItemClick}
+            disabled={(/edit/).test(location.pathname)}
           />
           <Menu.Item
             style={{ paddingTop: '16px', paddingBottom: '16px' }}

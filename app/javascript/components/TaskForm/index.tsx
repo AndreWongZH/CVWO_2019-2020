@@ -37,10 +37,13 @@ type TaskFormState = {
   title: string,
   deadline: string,
   describe: string | number,
+  created: string,
+  done: Boolean,
   redirect: Boolean,
   type: string,
   loading: Boolean,
   currentTags: string[],
+  missingTitle: Boolean,
 }
 
 
@@ -51,11 +54,14 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
     this.state = {
       title: '',
       deadline: '',
+      created: '',
       describe: '',
+      done: false,
       redirect: false,
       type: '',
       loading: true,
       currentTags: [],
+      missingTitle: false,
     };
   }
 
@@ -71,8 +77,10 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
         .then((res) => {
           this.setState({
             title: res.data.title,
+            created: res.data.created,
             deadline: res.data.deadline,
             describe: res.data.describe,
+            done: res.data.done,
             currentTags: res.data.tag.split(','),
           });
         })
@@ -104,23 +112,29 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
   onSubmit = (e: OnClickEventType) => {
     e.preventDefault();
     const {
-      type, title, deadline, describe, currentTags,
+      type, title, deadline, describe, currentTags, created, done,
     } = this.state;
     const {
       createTodo, updateNav, updateTodo, match,
     } = this.props;
 
-    const created = new Date(Date.now());
+    if (title === '') {
+      this.setState({ missingTitle: true });
+      return;
+    }
+
     const data: TodoObjectType = {
       title,
-      created: formatDate(created),
+      created,
       deadline,
       describe,
-      done: false,
+      done,
       tag: currentTags.join(),
     };
 
     if (type === 'add') {
+      const DateNow = new Date(Date.now());
+      data.created = formatDate(DateNow);
       createTodo(data);
     } else {
       data.id = match.params.id;
@@ -133,7 +147,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
 
   render() {
     const {
-      loading, redirect, type, title, deadline, describe, currentTags,
+      loading, redirect, type, title, deadline, describe, currentTags, missingTitle,
     } = this.state;
 
     const { tagsLoading, tags } = this.props;
@@ -168,6 +182,7 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
                 describe={describe}
                 tagList={tags}
                 currentTags={currentTags}
+                missingTitle={missingTitle}
               />
             </Grid.Column>
             {redirect && <Redirect to="/" />}
