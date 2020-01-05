@@ -6,7 +6,7 @@ export type TodoObjectType = {
     id?: string,
     title: string,
     created: string,
-    deadline: string,
+    deadline?: string,
     describe: string | number,
     done: Boolean
     tag: string
