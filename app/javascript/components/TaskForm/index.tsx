@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Grid, Header, Icon, Dimmer, Loader, Container, TextAreaProps,
+  Grid, Header, Icon, Dimmer, Loader, TextAreaProps,
 } from 'semantic-ui-react';
 
 import axios from 'axios';
@@ -8,11 +8,14 @@ import axios from 'axios';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { connect } from 'react-redux';
+
+
 import {
   createTodo, updateNav, updateTodo, loadTags, loadTagsFail,
 } from '../store/actions';
 
 import FormInput from './FormInput';
+import { SegmentMargin } from '../StyledComponents';
 
 import { formatDate } from '../../Functions';
 
@@ -22,6 +25,7 @@ import {
 import {
   CreateTodoType, UpdateNavType, UpdateTodoType, LoadTagsType,
 } from '../store/actions/ActionDeclaration';
+
 
 type TaskFormProps = {
   createTodo: CreateTodoType,
@@ -162,33 +166,31 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
       );
     }
     return (
-      <>
-        <Container>
-          <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
-            <Grid.Column textAlign="left" style={{ maxWidth: 450 }}>
-              <Header as="h2" color="teal" textAlign="center">
-                <Icon name="clipboard" />
-                { type === 'add' ? 'Add your new task here' : 'Update task here' }
-              </Header>
-              <FormInput
-                onTitleChange={this.onTitleChange}
-                onDeadlineChange={this.onDeadlineChange}
-                onDescChange={this.onDescChange}
-                onTagChange={this.onTagChange}
-                onSubmit={this.onSubmit}
-                type={type}
-                title={title}
-                deadline={deadline}
-                describe={describe}
-                tagList={tags}
-                currentTags={currentTags}
-                missingTitle={missingTitle}
-              />
-            </Grid.Column>
-            {redirect && <Redirect to="/" />}
-          </Grid>
-        </Container>
-      </>
+      <SegmentMargin>
+        <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
+          <Grid.Column textAlign="left" style={{ maxWidth: 450 }}>
+            <Header as="h2" color="teal" textAlign="center">
+              <Icon name="clipboard" />
+              { type === 'add' ? 'Add your new task here' : 'Update task here' }
+            </Header>
+            <FormInput
+              onTitleChange={this.onTitleChange}
+              onDeadlineChange={this.onDeadlineChange}
+              onDescChange={this.onDescChange}
+              onTagChange={this.onTagChange}
+              onSubmit={this.onSubmit}
+              type={type}
+              title={title}
+              deadline={deadline}
+              describe={describe}
+              tagList={tags}
+              currentTags={currentTags}
+              missingTitle={missingTitle}
+            />
+          </Grid.Column>
+          {redirect && <Redirect to="/" />}
+        </Grid>
+      </SegmentMargin>
     );
   }
 }

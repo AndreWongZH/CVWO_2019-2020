@@ -32,7 +32,7 @@ const EachItem = ({ data }: { data: TodoObjectType[]}) => {
         <Item.Description>{todo.describe}</Item.Description>
         <Item.Extra>
           {
-          todo.tag !== '' ? <LabelCell data={todo.tag} /> : null
+            todo.tag !== '' ? <LabelCell data={todo.tag} /> : null
           }
         </Item.Extra>
       </Item.Content>

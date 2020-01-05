@@ -10,7 +10,6 @@ type SearchBarProps = {
   search: string
 }
 
-
 const SearchBar = ({
   handleSearchChange, handleKeyDown, handleReset, search,
 }: SearchBarProps) => (
@@ -23,6 +22,7 @@ const SearchBar = ({
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}
+        style={{ marginRight: '0.5em' }}
       />
       <Button onClick={handleReset}>Reset</Button>
     </Menu.Item>

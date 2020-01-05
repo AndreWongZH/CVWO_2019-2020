@@ -1,11 +1,14 @@
 import * as React from 'react';
 import {
-  Header, Table, Segment, Dimmer, Loader, Message, Container,
+  Header, Table, Segment, Dimmer, Loader, Message,
 } from 'semantic-ui-react';
 
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
+
+import styled from 'styled-components';
+
 import {
   loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
 } from '../store/actions';
@@ -18,6 +21,10 @@ import {
   DeleteTodoType, LoadDataType, WipeMessageType, UpdateNavType, UpdateTableType, LoadTagsType,
 } from '../store/actions/ActionDeclaration';
 
+
+const ApplyMagin = styled.div`
+  margin-top: 1em;
+`;
 
 type TodoTableProps = {
   loadData: LoadDataType,
@@ -125,57 +132,57 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     }
     return (
       <>
-        <Container>
-          {flashMessage}
-          {redirect && <Redirect to={`/edit/${id}`} />}
+        {flashMessage}
+        {redirect && <Redirect to={`/edit/${id}`} />}
+        <ApplyMagin>
           <DropdownTag tagList={tags} handleTag={this.handleTag} />
-          <Segment raised>
-            <Table padded sortable selectable>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'title' ? sort.direction : null}
-                    onClick={this.handleSort('title')}
-                  >
-                      Title
-                  </Table.HeaderCell>
+        </ApplyMagin>
+        <Segment raised>
+          <Table padded sortable selectable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'title' ? sort.direction : null}
+                  onClick={this.handleSort('title')}
+                >
+                    Title
+                </Table.HeaderCell>
 
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'created' ? sort.direction : null}
-                    onClick={this.handleSort('created')}
-                  >
-                      Created
-                  </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'created' ? sort.direction : null}
+                  onClick={this.handleSort('created')}
+                >
+                    Created
+                </Table.HeaderCell>
 
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'deadline' ? sort.direction : null}
-                    onClick={this.handleSort('deadline')}
-                  >
-                      Deadline
-                  </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'deadline' ? sort.direction : null}
+                  onClick={this.handleSort('deadline')}
+                >
+                    Deadline
+                </Table.HeaderCell>
 
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'describe' ? sort.direction : null}
-                    onClick={this.handleSort('describe')}
-                  >
-                      Description
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>Tags</Table.HeaderCell>
-                  <Table.HeaderCell>Delete</Table.HeaderCell>
-                  <Table.HeaderCell>Edit</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'describe' ? sort.direction : null}
+                  onClick={this.handleSort('describe')}
+                >
+                    Description
+                </Table.HeaderCell>
+                <Table.HeaderCell>Tags</Table.HeaderCell>
+                <Table.HeaderCell>Delete</Table.HeaderCell>
+                <Table.HeaderCell>Edit</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-              <Table.Body>
-                <TableRow
-                  data={todos}
-                  handleDelete={this.handleDelete}
-                  handleEdit={this.handleEdit}
-                />
-              </Table.Body>
-            </Table>
-          </Segment>
-        </Container>
+            <Table.Body>
+              <TableRow
+                data={todos}
+                handleDelete={this.handleDelete}
+                handleEdit={this.handleEdit}
+              />
+            </Table.Body>
+          </Table>
+        </Segment>
       </>
     );
   }
