@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Item } from 'semantic-ui-react';
 
+import LabelCell from '../../../TodoTable/TableRow/LabelCell';
 import { capitalize, styleDate } from '../../../../Functions';
 
-import LabelCell from '../../../TodoTable/TableRow/LabelCell';
 import { TodoObjectType } from '../../../TypeDeclarations';
+
 
 const EachItem = ({ data }: { data: TodoObjectType[]}) => {
   const ItemCombined = data.map((todo: TodoObjectType) => (

@@ -1,7 +1,5 @@
 import { DropdownItemProps } from 'semantic-ui-react';
 
-// import * as React from 'react';
-
 export type TodoObjectType = {
     id?: string,
     title: string,

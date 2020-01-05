@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import {
   Form, Segment, Button, TextAreaProps,
 } from 'semantic-ui-react';
@@ -7,6 +6,7 @@ import {
 import TagInput from './TagInput';
 
 import { OnChangeEventType, OnChangeTextAreaEventType, OnClickEventType } from '../../TypeDeclarations';
+
 
 type FormInputProps = {
   title: string,
@@ -22,6 +22,7 @@ type FormInputProps = {
   onTagChange: (e: OnChangeEventType, { value }: { value: string[] }) => void,
   onSubmit: (e: OnClickEventType) => void,
 }
+
 
 const FormInput = ({
   title,
@@ -92,6 +93,5 @@ const FormInput = ({
   );
   return FormTotal;
 };
-
 
 export default FormInput;

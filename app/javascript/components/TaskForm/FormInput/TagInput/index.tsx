@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Dropdown } from 'semantic-ui-react';
+
 import { OnChangeEventType } from '../../../TypeDeclarations';
 
 
@@ -12,6 +13,7 @@ type TagInputProps = {
 type TagInputState = {
   options: { text: string, value: string }[]
 }
+
 
 class TagInput extends React.Component<TagInputProps, TagInputState> {
   constructor(props: TagInputProps) {

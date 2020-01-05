@@ -2,7 +2,9 @@ import * as React from 'react';
 import { Item } from 'semantic-ui-react';
 
 import EachItem from './EachItem';
+
 import { TodoObjectType } from '../../TypeDeclarations';
+
 
 const ItemSegment = ({ data, visible }: { data: TodoObjectType[], visible: Boolean}) => {
   if (visible) {

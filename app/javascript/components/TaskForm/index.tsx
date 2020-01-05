@@ -2,22 +2,16 @@ import * as React from 'react';
 import {
   Grid, Header, Icon, Dimmer, Loader, TextAreaProps,
 } from 'semantic-ui-react';
-
 import axios from 'axios';
-
 import { Redirect, RouteComponentProps } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-
-
-import {
-  createTodo, updateNav, updateTodo, loadTags, loadTagsFail,
-} from '../store/actions';
 
 import FormInput from './FormInput';
 import { SegmentMargin } from '../StyledComponents';
-
 import { formatDate } from '../../Functions';
+import {
+  createTodo, updateNav, updateTodo, loadTags, loadTagsFail,
+} from '../store/actions';
 
 import {
   OnChangeEventType, TodoObjectType, OnChangeTextAreaEventType, OnClickEventType, ReduxStateType,

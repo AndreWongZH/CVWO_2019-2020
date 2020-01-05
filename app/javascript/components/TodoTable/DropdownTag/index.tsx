@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
+import TagItem from './TagItem';
+
 import { ReduxStateType, OnTagSelectType } from '../../TypeDeclarations';
 
-import TagItem from './TagItem';
 
 type DropdownTagType = {
   tagList: ReduxStateType['tags'],
   handleTag: OnTagSelectType
 }
+
 
 const DropdownTag = ({ tagList, handleTag }: DropdownTagType) => {
   return (

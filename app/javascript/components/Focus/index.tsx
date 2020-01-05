@@ -2,22 +2,22 @@ import * as React from 'react';
 import {
   Grid, Header, Icon, Dimmer, Loader,
 } from 'semantic-ui-react';
-
 import { connect } from 'react-redux';
-
-import { loadFocus, updateCategory } from '../store/actions';
 
 import ItemSegment from './ItemSegment';
 import CategoryHeader from './CategoryHeader';
 import { SegmentMargin } from '../StyledComponents';
+import { loadFocus, updateCategory } from '../store/actions';
 
 import { ReduxStateType, UpdateCategoryDataType } from '../TypeDeclarations';
 import { LoadFocusType, UpdateCategoryType } from '../store/actions/ActionDeclaration';
+
 
 type FocusProps = {
   loadFocus: LoadFocusType,
   updateCategory: UpdateCategoryType
 }
+
 
 class Focus extends React.Component<FocusProps & ReduxStateType> {
   async componentDidMount() {
@@ -77,7 +77,6 @@ class Focus extends React.Component<FocusProps & ReduxStateType> {
                 <ItemSegment data={focus.past} visible={focusCategory.past} />
               </Grid.Column>
 
-
               <Grid.Column width={8}>
                 <CategoryHeader
                   hide={this.hide}
@@ -88,7 +87,6 @@ class Focus extends React.Component<FocusProps & ReduxStateType> {
                 />
                 <ItemSegment data={focus.today} visible={focusCategory.today} />
               </Grid.Column>
-
 
               <Grid.Column width={4}>
                 <CategoryHeader
@@ -133,6 +131,5 @@ const matchDispatchToProps = (dispatch: Function) => ({
   loadFocus: () => dispatch(loadFocus()),
   updateCategory: (category: UpdateCategoryDataType) => dispatch(updateCategory(category)),
 });
-
 
 export default connect(matchStateToProps, matchDispatchToProps)(Focus);

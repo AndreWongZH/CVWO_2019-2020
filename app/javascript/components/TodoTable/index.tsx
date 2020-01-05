@@ -2,19 +2,15 @@ import * as React from 'react';
 import {
   Header, Table, Segment, Dimmer, Loader, Message,
 } from 'semantic-ui-react';
-
 import { Redirect } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-
 import styled from 'styled-components';
-
-import {
-  loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
-} from '../store/actions';
 
 import TableRow from './TableRow';
 import DropdownTag from './DropdownTag';
+import {
+  loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
+} from '../store/actions';
 
 import { ReduxStateType, UpdateTableValuesType, OnClickEventType } from '../TypeDeclarations';
 import {

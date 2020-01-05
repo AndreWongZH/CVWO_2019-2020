@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
-
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import { updateNav, updateTable } from '../store/actions';
 
 import SearchBar from './SearchBar';
+import { updateNav, updateTable } from '../store/actions';
+
 import {
   ReduxStateType, OnChangeEventType, OnClickEventType, UpdateTableValuesType,
 } from '../TypeDeclarations';
 import { UpdateNavType, UpdateTableType } from '../store/actions/ActionDeclaration';
+
 
 type NavBarProps = {
   updateNav: UpdateNavType,
@@ -21,6 +21,7 @@ type NavBarState = {
   redirect: Boolean,
   search: string
 }
+
 
 class NavBar extends React.Component<
 NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
@@ -147,7 +148,6 @@ const matchStateToProps = (state: ReduxStateType) => {
     sort: state.sort,
   };
 };
-
 
 const matchDispatchToProps = (dispatch: Function) => ({
   updateNav: ({
