@@ -1,4 +1,6 @@
 class Todo < ApplicationRecord
+    validates :title, presence: true
+
     def self.apply_sort(sort_by, ascend)
         if (ascend == 'ascending')
             return Todo.order(sort_by)
