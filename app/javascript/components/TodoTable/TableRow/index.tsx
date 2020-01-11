@@ -18,7 +18,10 @@ type TableRowProps = {
 
 const TableRow = ({ data, handleDelete, handleEdit }: TableRowProps) => {
   const tablerows = data.map((todo) => (
-    <Table.Row key={todo.id}>
+    <Table.Row
+      key={todo.id}
+      className="tablerows"
+    >
       <Table.Cell>
         <Header as="h4">{ capitalize(todo.title) }</Header>
       </Table.Cell>

@@ -18,13 +18,13 @@ const SearchBar = ({
   <Menu.Menu position="right">
     <Menu.Item>
       <Input
+        id="searchbar"
         className="icon"
         icon="search"
         placeholder="Search..."
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}
-        style={{ marginRight: '0.5em' }}
       />
       <Button onClick={handleReset}>Reset</Button>
     </Menu.Item>

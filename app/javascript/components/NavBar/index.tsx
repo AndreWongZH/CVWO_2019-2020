@@ -96,14 +96,12 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
       <div>
         <Menu pointing secondary>
           <Menu.Item
-            style={{ paddingTop: '16px', paddingBottom: '16px' }}
             name="/"
             content="Todo Dashboard"
             active={navRoute === '/'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            style={{ paddingTop: '16px', paddingBottom: '16px' }}
             name="/add"
             content="Add new task"
             active={navRoute === '/add'}
@@ -111,7 +109,6 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
             disabled={(/edit/).test(location.pathname)}
           />
           <Menu.Item
-            style={{ paddingTop: '16px', paddingBottom: '16px' }}
             name="/focus"
             content="Focus on Me"
             active={navRoute === '/focus'}
@@ -120,7 +117,6 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
           {navRoute === '/edit'
             && (
               <Menu.Item
-                style={{ paddingTop: '16px', paddingBottom: '16px' }}
                 name="/edit"
                 content="Update todo"
                 active={navRoute === '/edit'}

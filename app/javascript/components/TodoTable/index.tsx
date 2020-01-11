@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {
-  Header, Table, Segment, Dimmer, Loader, Message,
+  Header, Table, Dimmer, Loader, Message, Segment,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 
 import TableRow from './TableRow';
 import DropdownTag from './DropdownTag';
@@ -17,16 +16,6 @@ import {
   DeleteTodoType, LoadDataType, WipeMessageType, UpdateNavType, UpdateTableType, LoadTagsType,
 } from '../store/actions/ActionDeclaration';
 
-
-const ApplyMagin = styled.div`
-  margin-top: 1em;
-`;
-
-const StyledMessage = styled(Message)`
-  &&& {
-    margin-top: 1em;
-  }
-`;
 
 type TodoTableProps = {
   loadData: LoadDataType,
@@ -115,12 +104,13 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     const flashMessage = message === ''
       ? (<div />)
       : (
-        <StyledMessage
+        <Message
+          id="message"
           onDismiss={this.handleMessage}
           onClose={this.handleMessage}
         >
           <Header>{message}</Header>
-        </StyledMessage>
+        </Message>
       );
 
     if (loading || tagsLoading) {
@@ -136,16 +126,15 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
       <>
         {flashMessage}
         {redirect && <Redirect to={`/edit/${id}`} />}
-        <ApplyMagin>
-          <DropdownTag tagList={tags} handleTag={this.handleTag} />
-        </ApplyMagin>
-        <Segment raised>
-          <Table padded sortable selectable>
+        <DropdownTag tagList={tags} handleTag={this.handleTag} />
+        <Segment raised style={{ backgroundColor: '#D8C3A5' }}>
+          <Table padded sortable selectable style={{ backgroundColor: '#9C9992' }}>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell
                   sorted={sort.heading === 'title' ? sort.direction : null}
                   onClick={this.handleSort('title')}
+                  style={sort.heading === 'title' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
                 >
                     Title
                 </Table.HeaderCell>
@@ -153,6 +142,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
                 <Table.HeaderCell
                   sorted={sort.heading === 'created' ? sort.direction : null}
                   onClick={this.handleSort('created')}
+                  style={sort.heading === 'created' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
                 >
                     Created
                 </Table.HeaderCell>
@@ -160,6 +150,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
                 <Table.HeaderCell
                   sorted={sort.heading === 'deadline' ? sort.direction : null}
                   onClick={this.handleSort('deadline')}
+                  style={sort.heading === 'deadline' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
                 >
                     Deadline
                 </Table.HeaderCell>
@@ -167,12 +158,13 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
                 <Table.HeaderCell
                   sorted={sort.heading === 'describe' ? sort.direction : null}
                   onClick={this.handleSort('describe')}
+                  style={sort.heading === 'describe' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
                 >
                     Description
                 </Table.HeaderCell>
-                <Table.HeaderCell>Tags</Table.HeaderCell>
-                <Table.HeaderCell>Delete</Table.HeaderCell>
-                <Table.HeaderCell>Edit</Table.HeaderCell>
+                <Table.HeaderCell style={{ backgroundColor: '#9C9992' }}>Tags</Table.HeaderCell>
+                <Table.HeaderCell style={{ backgroundColor: '#9C9992' }}>Delete</Table.HeaderCell>
+                <Table.HeaderCell style={{ backgroundColor: '#9C9992' }}>Edit</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 

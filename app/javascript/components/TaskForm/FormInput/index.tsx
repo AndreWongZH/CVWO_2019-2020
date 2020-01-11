@@ -4,6 +4,7 @@ import {
 } from 'semantic-ui-react';
 
 import TagInput from './TagInput';
+import '../../containers/App.css';
 
 import { OnChangeEventType, OnChangeTextAreaEventType, OnClickEventType } from '../../TypeDeclarations';
 
@@ -48,7 +49,7 @@ const FormInput = ({
             fluid
             icon="pencil alternate"
             iconPosition="left"
-            placeholder="title"
+            placeholder="Title"
             defaultValue={title}
             onChange={onTitleChange}
           />
@@ -85,7 +86,7 @@ const FormInput = ({
           />
         </Form.Field>
 
-        <Button color="teal" fluid size="large" onClick={onSubmit}>
+        <Button fluid size="large" onClick={onSubmit}>
           { type === 'add' ? 'Submit' : 'Update' }
         </Button>
       </Segment>

@@ -7,7 +7,6 @@ import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import FormInput from './FormInput';
-import { SegmentMargin } from '../StyledComponents';
 import { formatDate } from '../../Functions';
 import {
   createTodo, updateNav, updateTodo, loadTags, loadTagsFail,
@@ -160,31 +159,29 @@ TaskFormProps & RouteComponentProps<{ id: string }>, TaskFormState> {
       );
     }
     return (
-      <SegmentMargin>
-        <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
-          <Grid.Column textAlign="left" style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              <Icon name="clipboard" />
-              { type === 'add' ? 'Add your new task here' : 'Update task here' }
-            </Header>
-            <FormInput
-              onTitleChange={this.onTitleChange}
-              onDeadlineChange={this.onDeadlineChange}
-              onDescChange={this.onDescChange}
-              onTagChange={this.onTagChange}
-              onSubmit={this.onSubmit}
-              type={type}
-              title={title}
-              deadline={deadline}
-              describe={describe}
-              tagList={tags}
-              currentTags={currentTags}
-              missingTitle={missingTitle}
-            />
-          </Grid.Column>
-          {redirect && <Redirect to="/" />}
-        </Grid>
-      </SegmentMargin>
+      <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
+        <Grid.Column textAlign="left" style={{ maxWidth: 450 }}>
+          <Header id="addHead" as="h2" textAlign="center">
+            <Icon name="clipboard" />
+            { type === 'add' ? 'Add your new task here' : 'Update task here' }
+          </Header>
+          <FormInput
+            onTitleChange={this.onTitleChange}
+            onDeadlineChange={this.onDeadlineChange}
+            onDescChange={this.onDescChange}
+            onTagChange={this.onTagChange}
+            onSubmit={this.onSubmit}
+            type={type}
+            title={title}
+            deadline={deadline}
+            describe={describe}
+            tagList={tags}
+            currentTags={currentTags}
+            missingTitle={missingTitle}
+          />
+        </Grid.Column>
+        {redirect && <Redirect to="/" />}
+      </Grid>
     );
   }
 }

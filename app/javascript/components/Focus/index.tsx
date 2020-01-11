@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {
-  Grid, Header, Icon, Dimmer, Loader,
+  Grid, Header, Icon, Dimmer, Loader, Segment,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import ItemSegment from './ItemSegment';
 import CategoryHeader from './CategoryHeader';
-import { SegmentMargin } from '../StyledComponents';
 import { loadFocus, updateCategory } from '../store/actions';
 
 import { ReduxStateType, UpdateCategoryDataType } from '../TypeDeclarations';
@@ -59,7 +58,7 @@ class Focus extends React.Component<FocusProps & ReduxStateType> {
     }
     return (
       <>
-        <SegmentMargin>
+        <Segment id="focusSegment">
           <Header as="h1" icon textAlign="center">
             <Icon name="coffee" circular />
             <Header.Content>At a glance...</Header.Content>
@@ -113,7 +112,7 @@ class Focus extends React.Component<FocusProps & ReduxStateType> {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-        </SegmentMargin>
+        </Segment>
       </>
     );
   }
