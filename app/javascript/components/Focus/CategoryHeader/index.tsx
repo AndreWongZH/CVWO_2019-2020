@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Segment, Header, Icon } from 'semantic-ui-react';
-
 // SemanticICONS is excluded from no-unused-vars rule
 import { SemanticICONS } from 'semantic-ui-react/dist/commonjs/generic';
+
 
 type CategoryHeaderProps = {
   type: string,
@@ -12,6 +12,7 @@ type CategoryHeaderProps = {
   focusCategory: Boolean
 }
 
+
 const CategoryHeader = ({
   type, hide, iconName, headingName, focusCategory,
 }: CategoryHeaderProps) => (
@@ -19,8 +20,8 @@ const CategoryHeader = ({
     <Header as="h3" floated="left">
       <Icon name={iconName} />
       <Header.Content>{headingName}</Header.Content>
-
     </Header>
+
     <Header floated="right">
       <Icon link onClick={hide(type)} name={focusCategory ? 'caret up' : 'caret down'} />
     </Header>

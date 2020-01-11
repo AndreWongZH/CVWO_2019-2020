@@ -5,9 +5,9 @@ import { Label } from 'semantic-ui-react';
 const LabelCell = ({ data } : { data : string }) => {
   const listTags = data.split(',');
   const labels = listTags.map((tag) => (
-    <React.Fragment key={tag}>
+    <div className="tags" key={tag}>
       <Label color="red">{tag}</Label>
-    </React.Fragment>
+    </div>
   ));
   return (
     <>

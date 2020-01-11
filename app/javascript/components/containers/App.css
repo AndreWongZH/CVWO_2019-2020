@@ -1,0 +1,80 @@
+:root {
+    --button-color: #9C9992;
+}
+
+body {
+    background-color: #EAE7DC;
+}
+
+/* input fields */
+
+/* header for making new todo */
+#addHead {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    color: rgb(206, 71, 56);
+}
+
+/* change placeholder color */
+.field input::placeholder,textarea::placeholder {
+    color: black !important;
+}
+.ui .default {
+    color: rgba(0,0,0, 0.6) !important;
+}
+.ui input::placeholder {
+    color: black !important;
+}
+
+/* change submit button color */
+.ui.stacked.segment button {
+    background: rgb(206, 71, 56);
+    color: white;
+}
+
+
+/* homepage styling */
+#searchbar {
+    background: lightgrey !important;
+    margin-right: 0.5em;
+}
+
+.ui.button {
+    background: var(--button-color);
+}
+
+tr::selection {
+    background: var(--button-color);
+}
+
+.tablerows {
+    background: #EAE7DC;
+}
+
+#message {
+    margin-top: 1em;
+}
+
+div.ui.button.floating.labeled.dropdown.icon {
+    margin-top: 1em;
+}
+
+
+/* navigation styling */
+a.item {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+}
+
+
+/* label styling */
+.tags {
+    margin: 0.2em;
+    display: inline-block;
+}
+
+/* focus styling */
+#focusSegment {
+    margin-top: 3em;
+    background: #B5B358;
+}

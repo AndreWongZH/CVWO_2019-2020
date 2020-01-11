@@ -56,7 +56,6 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action: { type: string, payload?: any }) {
-  console.log(action.type);
   switch (action.type) {
     case LOAD_TAGS_BEGIN:
       return {

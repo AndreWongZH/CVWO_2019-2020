@@ -1,17 +1,15 @@
 import * as React from 'react';
 import {
-  Header, Table, Segment, Dimmer, Loader, Message, Container,
+  Header, Table, Dimmer, Loader, Message, Segment,
 } from 'semantic-ui-react';
-
 import { Redirect } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import {
-  loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
-} from '../store/actions';
 
 import TableRow from './TableRow';
 import DropdownTag from './DropdownTag';
+import {
+  loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
+} from '../store/actions';
 
 import { ReduxStateType, UpdateTableValuesType, OnClickEventType } from '../TypeDeclarations';
 import {
@@ -107,6 +105,7 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
       ? (<div />)
       : (
         <Message
+          id="message"
           onDismiss={this.handleMessage}
           onClose={this.handleMessage}
         >
@@ -125,57 +124,59 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     }
     return (
       <>
-        <Container>
-          {flashMessage}
-          {redirect && <Redirect to={`/edit/${id}`} />}
-          <DropdownTag tagList={tags} handleTag={this.handleTag} />
-          <Segment raised>
-            <Table padded sortable selectable>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'title' ? sort.direction : null}
-                    onClick={this.handleSort('title')}
-                  >
-                      Title
-                  </Table.HeaderCell>
+        {flashMessage}
+        {redirect && <Redirect to={`/edit/${id}`} />}
+        <DropdownTag tagList={tags} handleTag={this.handleTag} />
+        <Segment raised style={{ backgroundColor: '#D8C3A5' }}>
+          <Table padded sortable selectable style={{ backgroundColor: '#9C9992' }}>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'title' ? sort.direction : null}
+                  onClick={this.handleSort('title')}
+                  style={sort.heading === 'title' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
+                >
+                    Title
+                </Table.HeaderCell>
 
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'created' ? sort.direction : null}
-                    onClick={this.handleSort('created')}
-                  >
-                      Created
-                  </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'created' ? sort.direction : null}
+                  onClick={this.handleSort('created')}
+                  style={sort.heading === 'created' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
+                >
+                    Created
+                </Table.HeaderCell>
 
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'deadline' ? sort.direction : null}
-                    onClick={this.handleSort('deadline')}
-                  >
-                      Deadline
-                  </Table.HeaderCell>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'deadline' ? sort.direction : null}
+                  onClick={this.handleSort('deadline')}
+                  style={sort.heading === 'deadline' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
+                >
+                    Deadline
+                </Table.HeaderCell>
 
-                  <Table.HeaderCell
-                    sorted={sort.heading === 'describe' ? sort.direction : null}
-                    onClick={this.handleSort('describe')}
-                  >
-                      Description
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>Tags</Table.HeaderCell>
-                  <Table.HeaderCell>Delete</Table.HeaderCell>
-                  <Table.HeaderCell>Edit</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
+                <Table.HeaderCell
+                  sorted={sort.heading === 'describe' ? sort.direction : null}
+                  onClick={this.handleSort('describe')}
+                  style={sort.heading === 'describe' ? { backgroundColor: '#E98074' } : { backgroundColor: '#9C9992' }}
+                >
+                    Description
+                </Table.HeaderCell>
+                <Table.HeaderCell style={{ backgroundColor: '#9C9992' }}>Tags</Table.HeaderCell>
+                <Table.HeaderCell style={{ backgroundColor: '#9C9992' }}>Delete</Table.HeaderCell>
+                <Table.HeaderCell style={{ backgroundColor: '#9C9992' }}>Edit</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-              <Table.Body>
-                <TableRow
-                  data={todos}
-                  handleDelete={this.handleDelete}
-                  handleEdit={this.handleEdit}
-                />
-              </Table.Body>
-            </Table>
-          </Segment>
-        </Container>
+            <Table.Body>
+              <TableRow
+                data={todos}
+                handleDelete={this.handleDelete}
+                handleEdit={this.handleEdit}
+              />
+            </Table.Body>
+          </Table>
+        </Segment>
       </>
     );
   }

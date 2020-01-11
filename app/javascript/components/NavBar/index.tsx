@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
-
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import { updateNav, updateTable } from '../store/actions';
 
 import SearchBar from './SearchBar';
+import { updateNav, updateTable } from '../store/actions';
+
 import {
   ReduxStateType, OnChangeEventType, OnClickEventType, UpdateTableValuesType,
 } from '../TypeDeclarations';
 import { UpdateNavType, UpdateTableType } from '../store/actions/ActionDeclaration';
+
 
 type NavBarProps = {
   updateNav: UpdateNavType,
@@ -21,6 +21,7 @@ type NavBarState = {
   redirect: Boolean,
   search: string
 }
+
 
 class NavBar extends React.Component<
 NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
@@ -95,14 +96,12 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
       <div>
         <Menu pointing secondary>
           <Menu.Item
-            style={{ paddingTop: '16px', paddingBottom: '16px' }}
             name="/"
             content="Todo Dashboard"
             active={navRoute === '/'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            style={{ paddingTop: '16px', paddingBottom: '16px' }}
             name="/add"
             content="Add new task"
             active={navRoute === '/add'}
@@ -110,7 +109,6 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
             disabled={(/edit/).test(location.pathname)}
           />
           <Menu.Item
-            style={{ paddingTop: '16px', paddingBottom: '16px' }}
             name="/focus"
             content="Focus on Me"
             active={navRoute === '/focus'}
@@ -119,7 +117,6 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
           {navRoute === '/edit'
             && (
               <Menu.Item
-                style={{ paddingTop: '16px', paddingBottom: '16px' }}
                 name="/edit"
                 content="Update todo"
                 active={navRoute === '/edit'}
@@ -147,7 +144,6 @@ const matchStateToProps = (state: ReduxStateType) => {
     sort: state.sort,
   };
 };
-
 
 const matchDispatchToProps = (dispatch: Function) => ({
   updateNav: ({
