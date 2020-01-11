@@ -12,7 +12,7 @@ import TaskForm from '../TaskForm';
 import Focus from '../Focus';
 import NavBar from '../NavBar';
 
-import './App.css';
+import '../../../assets/stylesheets/App.css';
 
 
 const store = configureStore();
