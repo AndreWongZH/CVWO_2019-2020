@@ -1,16 +1,14 @@
 import * as React from 'react';
-
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
-import { Container } from 'semantic-ui-react';
-
 import { Provider } from 'react-redux';
-import configureStore from '../store/configureStore';
 
+import configureStore from '../store/configureStore';
 import TodoTable from '../TodoTable';
 import TaskForm from '../TaskForm';
 import Focus from '../Focus';
-import NavBar from '../NavBar';
+import Login from '../Login';
+import NotFound from '../NotFound';
+import ProtectedRoute from './ProtectedRoute';
 
 import '../../../assets/stylesheets/App.css';
 
@@ -21,15 +19,14 @@ const App = () => (
   <Provider store={store}>
     <BrowserRouter>
       <div>
-        <NavBar />
-        <Container>
-          <Switch>
-            <Route exact path="/" component={TodoTable} />
-            <Route path="/add" component={TaskForm} />
-            <Route path="/edit/:id" component={TaskForm} />
-            <Route path="/focus" component={Focus} />
-          </Switch>
-        </Container>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <ProtectedRoute exact path="/" component={TodoTable} />
+          <ProtectedRoute exact path="/add" component={TaskForm} />
+          <ProtectedRoute exact path="/edit/:id" component={TaskForm} />
+          <ProtectedRoute exact path="/focus" component={Focus} />
+          <Route path="*" component={NotFound} />
+        </Switch>
       </div>
     </BrowserRouter>
   </Provider>

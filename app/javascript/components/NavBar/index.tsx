@@ -2,24 +2,23 @@ import * as React from 'react';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
-import SearchBar from './SearchBar';
-import { updateNav, updateTable } from '../store/actions';
+import { updateNav } from '../store/actions';
 
 import {
-  ReduxStateType, OnChangeEventType, OnClickEventType, UpdateTableValuesType,
+  ReduxStateType, OnClickEventType,
 } from '../TypeDeclarations';
-import { UpdateNavType, UpdateTableType } from '../store/actions/ActionDeclaration';
+import { UpdateNavType } from '../store/actions/ActionDeclaration';
 
 
 type NavBarProps = {
   updateNav: UpdateNavType,
-  updateTable: UpdateTableType,
+  name: string
 }
 
 type NavBarState = {
-  redirect: Boolean,
-  search: string
+  redirect: Boolean
 }
 
 
@@ -29,20 +28,17 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
     super(props);
     this.state = {
       redirect: false,
-      search: '',
     };
   }
 
   componentDidMount() {
-    const { updateNav, location, sort } = this.props;
+    const { updateNav, location } = this.props;
 
     if (location.pathname.match(/edit/)) {
       updateNav({ title: '/edit' });
     } else {
       updateNav({ title: location.pathname });
     }
-
-    this.setState({ search: sort.search });
   }
 
   // used to toggle navigation bar and redirect to correct route
@@ -60,37 +56,15 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
     }
   }
 
-  handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    const { updateTable } = this.props;
-    const { search } = this.state;
-
-    if (e.key === 'Enter') {
-      updateTable({
-        search,
-      });
-    }
-  }
-
-  handleSearchChange = (e: OnChangeEventType) => {
-    this.setState({ search: e.target.value });
-  }
-
-  // reset search query
-  handleReset = () => {
-    const { updateTable } = this.props;
-    const { search } = this.state;
-
-    if (search !== '') {
-      this.setState({ search: '' });
-      updateTable({
-        search: '',
-      });
-    }
+  handleLogout = () => {
+    axios.get('/logout').then(() => {
+      window.location.reload();
+    });
   }
 
   render() {
-    const { navRoute, location } = this.props;
-    const { redirect, search } = this.state;
+    const { navRoute, location, name } = this.props;
+    const { redirect } = this.state;
 
     return (
       <div>
@@ -114,21 +88,19 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
             active={navRoute === '/focus'}
             onClick={this.handleItemClick}
           />
+          <Menu.Menu position="right">
+            <Menu.Item header>{name}</Menu.Item>
+            <Menu.Item
+              name="logout"
+              onClick={this.handleLogout}
+            />
+          </Menu.Menu>
           {navRoute === '/edit'
             && (
               <Menu.Item
                 name="/edit"
                 content="Update todo"
                 active={navRoute === '/edit'}
-              />
-            )}
-          {navRoute === '/'
-            && (
-              <SearchBar
-                handleSearchChange={this.handleSearchChange}
-                handleKeyDown={this.handleKeyDown}
-                handleReset={this.handleReset}
-                search={search}
               />
             )}
         </Menu>
@@ -141,7 +113,6 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
 const matchStateToProps = (state: ReduxStateType) => {
   return {
     navRoute: state.navRoute,
-    sort: state.sort,
   };
 };
 
@@ -149,7 +120,6 @@ const matchDispatchToProps = (dispatch: Function) => ({
   updateNav: ({
     title, loading,
   }: { title: string, loading?: Boolean }) => dispatch(updateNav({ title, loading })),
-  updateTable: (values: UpdateTableValuesType) => dispatch(updateTable(values)),
 });
 
 // used as any as a work-around for typescript because withRouter is not compatible() with connect()

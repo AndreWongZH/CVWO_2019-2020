@@ -1,22 +1,29 @@
 class TodosController < ApplicationController
 	before_action :set_todo, only: [:show, :update, :destroy]
+	skip_before_action :verify_authenticity_token
 
 	# GET /todos
 	def index
+		@uid = session[:user]['uid']
+		
 		@sort = params[:sort]
 		@ascend = params[:ascend] || 'ascending'
 
 		@search = params[:search]
 
 		@tag = params[:tag]
-
-		@todos = Todo.apply_tag(@tag).apply_sort(@sort, @ascend).apply_search(@search)
+		# @todos = Todo.all
+		@todos = Todo.where(uid: @uid).apply_search(@search).apply_tag(@tag).apply_sort(@sort, @ascend)
 		json_response(@todos)
 	end
 
 	# POST /todos
 	def create
-		@todo = Todo.create!(todo_params)
+		@uid = session[:user]['uid']
+
+		@todo = Todo.new todo_params
+		@todo.uid = @uid
+		@todo.save
 		json_response(@todo, :created)
 	end
 
@@ -27,6 +34,9 @@ class TodosController < ApplicationController
 
 	# PUT /todos/:id
 	def update
+		@uid = session[:user]['uid']
+
+		todo_params[:uid] = @uid
 		@todo.update(todo_params)
 		head :no_content
 	end
@@ -39,10 +49,12 @@ class TodosController < ApplicationController
 
 	# GET /todos/focus
 	def focus
-		@past = Todo.search_past()
-		@today = Todo.search_today()
-		@tmr = Todo.search_tmr()
-		@impt = Todo.search_impt()
+		@uid = session[:user]['uid']
+
+		@past = Todo.where(uid: @uid).search_past()
+		@today = Todo.where(uid: @uid).search_today()
+		@tmr = Todo.where(uid: @uid).search_tmr()
+		@impt = Todo.where(uid: @uid).search_impt()
 
 		@data = {
 			:past => @past,
@@ -57,7 +69,8 @@ class TodosController < ApplicationController
 	# GET /todos/tags
 
 	def tags
-		@tags = Todo.get_tags()
+		@uid = session[:user]['uid']
+		@tags = Todo.where(uid: @uid).get_tags()
 
 		json_response(@tags)
 	end
