@@ -7,7 +7,7 @@ const logo = require('../../../assets/images/todo_logo.png');
 
 class Login extends React.Component {
   handleLogin = () => {
-    window.location.replace('http://localhost:3000/auth/google_oauth2');
+    window.location.replace(`${window.location.origin}/auth/google_oauth2`);
   };
 
   render() {
