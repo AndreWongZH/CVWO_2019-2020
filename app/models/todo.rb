@@ -14,11 +14,7 @@ class Todo < ApplicationRecord
     end
 
     def self.apply_tag(tag)
-        if (tag == '')
-            return Todo
-        else
-            return Todo.where("tag LIKE ?", "%#{tag}%")
-        end
+        return Todo.where("tag LIKE ?", "%#{tag}%")
     end
 
     def self.search_past()
