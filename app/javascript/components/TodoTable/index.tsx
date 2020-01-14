@@ -1,17 +1,20 @@
 import * as React from 'react';
 import {
-  Header, Table, Dimmer, Loader, Message, Segment,
+  Header, Table, Dimmer, Loader, Message, Segment, Grid,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import TableRow from './TableRow';
 import DropdownTag from './DropdownTag';
+import SearchBar from './SearchBar';
 import {
   loadData, wipeMessage, deleteTodo, updateNav, updateTable, loadTags,
 } from '../store/actions';
 
-import { ReduxStateType, UpdateTableValuesType, OnClickEventType } from '../TypeDeclarations';
+import {
+  ReduxStateType, UpdateTableValuesType, OnClickEventType, OnChangeEventType,
+} from '../TypeDeclarations';
 import {
   DeleteTodoType, LoadDataType, WipeMessageType, UpdateNavType, UpdateTableType, LoadTagsType,
 } from '../store/actions/ActionDeclaration';
@@ -28,7 +31,8 @@ type TodoTableProps = {
 
 type TodoTableState = {
   id: string,
-  redirect: Boolean
+  redirect: Boolean,
+  search: string,
 }
 
 
@@ -38,13 +42,15 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     this.state = {
       id: '',
       redirect: false,
+      search: '',
     };
   }
 
   componentDidMount() {
-    const { loadData, loadTags } = this.props;
+    const { loadData, loadTags, sort } = this.props;
     loadData();
     loadTags();
+    this.setState({ search: sort.search });
   }
 
   handleMessage = (e: OnClickEventType) => {
@@ -95,11 +101,39 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
     });
   }
 
+  handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const { updateTable } = this.props;
+    const { search } = this.state;
+
+    if (e.key === 'Enter') {
+      updateTable({
+        search,
+      });
+    }
+  }
+
+  handleSearchChange = (e: OnChangeEventType) => {
+    this.setState({ search: e.target.value });
+  }
+
+  // reset search query
+  handleReset = () => {
+    const { updateTable } = this.props;
+    const { search } = this.state;
+
+    if (search !== '') {
+      this.setState({ search: '' });
+      updateTable({
+        search: '',
+      });
+    }
+  }
+
   render() {
     const {
       todos, loading, message, sort, tags, tagsLoading,
     } = this.props;
-    const { redirect, id } = this.state;
+    const { redirect, id, search } = this.state;
 
     const flashMessage = message === ''
       ? (<div />)
@@ -126,7 +160,20 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
       <>
         {flashMessage}
         {redirect && <Redirect to={`/edit/${id}`} />}
-        <DropdownTag tagList={tags} handleTag={this.handleTag} />
+        <Grid>
+          <Grid.Column floated="left" width={5}>
+            <DropdownTag tagList={tags} handleTag={this.handleTag} />
+          </Grid.Column>
+          <Grid.Column floated="right" width={5}>
+            <SearchBar
+              handleSearchChange={this.handleSearchChange}
+              handleKeyDown={this.handleKeyDown}
+              handleReset={this.handleReset}
+              search={search}
+            />
+          </Grid.Column>
+        </Grid>
+
         <Segment raised style={{ backgroundColor: '#D8C3A5' }}>
           <Table padded sortable selectable style={{ backgroundColor: '#9C9992' }}>
             <Table.Header>
