@@ -161,10 +161,10 @@ class TodoTable extends React.Component<TodoTableProps & ReduxStateType, TodoTab
         {flashMessage}
         {redirect && <Redirect to={`/edit/${id}`} />}
         <Grid>
-          <Grid.Column floated="left" width={5}>
+          <Grid.Column floated="left" width={8}>
             <DropdownTag tagList={tags} handleTag={this.handleTag} />
           </Grid.Column>
-          <Grid.Column floated="right" width={5}>
+          <Grid.Column floated="right" width={8}>
             <SearchBar
               handleSearchChange={this.handleSearchChange}
               handleKeyDown={this.handleKeyDown}

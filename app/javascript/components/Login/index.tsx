@@ -14,13 +14,13 @@ class Login extends React.Component {
     return (
       <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header id="addHead" as="h2" color="teal" textAlign="center">
+          <Header id="addHead" as="h2" textAlign="center">
             <Image src={logo} />
             Start using Todo app
             <br />
             Login to your account
           </Header>
-          <Form size="large">
+          <Form size="large" style={{ marginTop: '3em' }}>
             <Segment stacked>
               <Button fluid size="large" onClick={this.handleLogin}>
                 <Icon name="google" />

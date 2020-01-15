@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu, MenuItemProps } from 'semantic-ui-react';
+import { Menu, MenuItemProps, Icon } from 'semantic-ui-react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -89,7 +89,10 @@ NavBarProps & ReduxStateType & RouteComponentProps, NavBarState> {
             onClick={this.handleItemClick}
           />
           <Menu.Menu position="right">
-            <Menu.Item header>{name}</Menu.Item>
+            <Menu.Item header>
+              <Icon name="user circle" size="large" />
+              {name}
+            </Menu.Item>
             <Menu.Item
               name="logout"
               onClick={this.handleLogout}

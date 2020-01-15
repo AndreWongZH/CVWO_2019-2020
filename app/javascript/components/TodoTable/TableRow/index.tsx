@@ -38,13 +38,13 @@ const TableRow = ({ data, handleDelete, handleEdit }: TableRowProps) => {
         }
       </Table.Cell>
 
-      <Table.Cell>
+      <Table.Cell collapsing>
         <Button icon onClick={handleDelete} id={todo.id}>
           <Icon name="close" color="red" />
         </Button>
       </Table.Cell>
 
-      <Table.Cell>
+      <Table.Cell collapsing>
         <Button icon onClick={handleEdit} id={todo.id}>
           <Icon name="pencil alternate" />
         </Button>

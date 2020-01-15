@@ -15,7 +15,7 @@ type SearchBarProps = {
 const SearchBar = ({
   handleSearchChange, handleKeyDown, handleReset, search,
 }: SearchBarProps) => (
-  <div style={{ marginTop: '1em' }}>
+  <div style={{ marginTop: '1em', float: 'right' }}>
     <Input
       id="searchbar"
       className="icon"
